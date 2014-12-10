@@ -1,12 +1,15 @@
 import serial
-
+import time
 
 #open port
 ser = serial.Serial(0)
 #create/open text files that will hold messages from each node
 nodeOne = open('nodeOne.txt', 'a')
-nodeOne = open('nodeOne.txt', 'a')
-nodeOne = open('nodeOne.txt', 'a')
+nodeTwo = open('nodeTwo.txt', 'a')
+nodeThree = open('nodeThree.txt', 'a')
+nodeFour = open('nodeFour.txt', 'a')
+#etc etc
+
 #when something appears on canbus sort and store item
 while 1:
     x= ser.readline()
@@ -15,6 +18,7 @@ while 1:
 
     if node_id == 1:
         print("worked\n")
+        nodeOne.write(time.strftime("%c") + x+"\n")
     elif node_id == 2:
         print("something else")
     elif node_id == 3:
