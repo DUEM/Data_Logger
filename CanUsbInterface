@@ -3,7 +3,10 @@ import serial
 
 #open port
 ser = serial.Serial(0)
-
+#create/open text files that will hold messages from each node
+nodeOne = open('nodeOne.txt', 'a')
+nodeOne = open('nodeOne.txt', 'a')
+nodeOne = open('nodeOne.txt', 'a')
 #when something appears on canbus sort and store item
 while 1:
     x= ser.readline()
