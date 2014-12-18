@@ -1,19 +1,50 @@
 import mysql.connector as sql
+import time   
 
-connect = sql.connect(user = "python1", database = "test") # connected to database
-cursor = connect.cursor()
-add_message = ("INSERT INTO can ( `Time`, `Node ID`, `Node Type`, `Data` )VALUES (10,11,'sensor','hello world') ") 
-cursor.execute(add_message) # updating the table
-connect.commit()
-#this code doesnt work and im not sure why yet
+def connect(username,database):
+    connect = sql.connect(user = username, database = database) # connected to database
+    return connect
+def cursor(connect):
+    cursor = connect.cursor()
+    return cursor
+def add_message(node_id,node_type,data,cursor,connect):
+    time1 = time.strftime('%Y-%m-%d %H:%M:%S')
 
-######################### querying a table ####################################################
-query = ("SELECT `Node ID`,`Node Type`, `Data` FROM can WHERE `Node ID` BETWEEN 1 AND 3")
-# choose which columns you want outputted          "SELECT `Node ID`,`Node Type`, `Data` FROM can"
-# choose how you wish to filter with               "WHERE `Node ID` BETWEEN 1 AND 3"
-cursor.execute(query)
+    ###################################### Creating the Argument #######################
+    add_message = "INSERT INTO can ( `Time`, `Node ID`, `Node Type`, `Data` )VALUES ('"
+    add_message += time1
+    add_message += "','"
+    add_message += node_id
+    add_message += "','"
+    add_message += node_type
+    add_message += "','"
+    add_message += data
+    add_message += "')"
 
-for (item) in cursor:
-  print(item) # v.basic printing
+    cursor.execute(add_message) 
+    connect.commit()
+    return 1
+def query(cursor,connect):
+    arg = ("SELECT `Node ID`,`Time`, `Data` FROM can WHERE `Node ID` BETWEEN 0 AND 1000")
+    # make query editable
+    cursor.execute(arg)
+    return cursor
     
-#Need to make the values within the command editable (use string conc.)
+username = str(input("Enter Username: "))
+database = str(input("Enter Database: "))
+connect = connect(username,database)
+cursor = cursor(connect)
+while 1==1:
+    print("1) Adding Data to Table")
+    print("2) Query Table")
+    choice = str(input("Choose Option: "))
+    if choice == str(1):
+        node_id = str(input("Enter Node ID: "))
+        node_type = str(input("Enter Node Type: "))
+        data = str(input("Enter Data: "))
+        add_message(node_id,node_type,data,cursor,connect)
+
+    if choice == str(2):
+        cursor = query(cursor,connect)
+        for (item) in cursor:
+            print(item) # v.basic printing needs improving!!!
