@@ -7,16 +7,14 @@ def connect(username,database):
 def cursor(connect):
     cursor = connect.cursor()
     return cursor
-def add_message(node_id,node_type,data,cursor,connect):
+def add_message(node_id,data,cursor,connect):
     time1 = time.strftime('%Y-%m-%d %H:%M:%S')
 
     ###################################### Creating the Argument #######################
-    add_message = "INSERT INTO can ( `Time`, `Node ID`, `Node Type`, `Data` )VALUES ('"
+    add_message = "INSERT INTO can ( `Time`, `Node ID`, `Data` )VALUES ('"
     add_message += time1
     add_message += "','"
     add_message += node_id
-    add_message += "','"
-    add_message += node_type
     add_message += "','"
     add_message += data
     add_message += "')"
@@ -40,9 +38,8 @@ while 1==1:
     choice = str(input("Choose Option: "))
     if choice == str(1):
         node_id = str(input("Enter Node ID: "))
-        node_type = str(input("Enter Node Type: "))
         data = str(input("Enter Data: "))
-        add_message(node_id,node_type,data,cursor,connect)
+        add_message(node_id,data,cursor,connect)
 
     if choice == str(2):
         cursor = query(cursor,connect)
