@@ -55,7 +55,6 @@ t=0
 while t<100: #arbitrary number to ensure port eventually closes
     print("No. " +str(t))
     x= ser.read(22)
-    print(x)
     y=list(x)
     if x != "":
         joined = "0x"+y[1]+y[2]+y[3]
@@ -69,24 +68,7 @@ while t<100: #arbitrary number to ensure port eventually closes
         cursor = cursor(connect)
         add_message(str(node_id),str(data),cursor,connect)
         ###############################################################
-        if node_id == 1:
-            print("this was node 1")
-            print(data)
-        elif node_id == 2:
-            print("something else")
-        elif node_id == 3:
-            print("something else")
-        elif node_id == 4:
-            print("something else")
-        elif node_id == 5:
-            print("something else")
-        elif node_id == 6:
-            print("something else")
-        elif node_id == 7:
-            print("something else")
-        else:
-            print("this was node 0")
-            print(data)
+        print("Node "+ str(node_id) + " message:"+"\n"+data+"\n")
         t+=1
     else:
         t+=1
