@@ -1,3 +1,4 @@
+
 import serial
 #open port
 ser = serial.Serial()
