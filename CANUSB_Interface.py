@@ -60,21 +60,18 @@ while t<100: #arbitrary number to ensure port eventually closes
     if x != "":
         joined = "0x"+y[1]+y[2]+y[3]
         node_id = int(joined,0)
-        data=[]
-        for j in range(5,21,2):
-            data.append(int("0x"+y[j]+y[j+1],0))
-            # can data be a stored as a string as opposed to an array? 
-            
-    ######### SQL BIT HERE ########################################
-    connect = connect("InsertUserNameHere","InsertTableNameHere")
-    cursor = cursor(connect)
-    add_message(str(node_id),str(data),cursor,connect)
-    ###############################################################
-    
-    
+        data=""
+        for j in range(5,21,1):
+            data+=y[j]
+        data=data.decode("hex")
+         ######### SQL BIT HERE ########################################
+        connect = connect("InsertUserNameHere","InsertTableNameHere")
+        cursor = cursor(connect)
+        add_message(str(node_id),str(data),cursor,connect)
+        ###############################################################
         if node_id == 1:
             print("this was node 1")
-            print data
+            print(data)
         elif node_id == 2:
             print("something else")
         elif node_id == 3:
@@ -89,7 +86,7 @@ while t<100: #arbitrary number to ensure port eventually closes
             print("something else")
         else:
             print("this was node 0")
-            print data
+            print(data)
         t+=1
     else:
         t+=1
