@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 import serial
 #open port
@@ -56,6 +55,4 @@ while t<100: #arbitrary number to ensure port eventually closes
     #close port when finished
 ser.write(b"C\r") #Close CANUSB
 ser.close()
-=======
-import serial
->>>>>>> e33b72b4b479aae0e87dc6e2482f4f23920e79b6
+
