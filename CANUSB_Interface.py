@@ -1,8 +1,6 @@
 #import SQL_Interface
 import serial
-<<<<<<< HEAD
-import io
-=======
+"""
 import mysql.connector as sql
 import time   
 
@@ -24,7 +22,6 @@ def add_message(node_id,data,cursor,connect):
     add_message += "','"
     add_message += data
     add_message += "')"
-
     cursor.execute(add_message) 
     connect.commit()
     return 1
@@ -34,9 +31,7 @@ def query(cursor,connect):
     cursor.execute(arg)
     return cursor
 #########################################################################################################################
-
-
->>>>>>> origin/master
+"""
 #open port
 def open_ports(port,baudrate,timeout):
     ser = serial.Serial()
@@ -54,28 +49,33 @@ def open_ports(port,baudrate,timeout):
     else:
         print( "Port did not open")
     return ser
+
 #Sort messages
-<<<<<<< HEAD
 def sort_messages(ser,t):
-        print("No. " + str(t))
-        x = ser.read(22)
-        print(x)
-        y = list(x)
-        if x != "":
-            joined = "0x" + y[1] + y[2] + y[3]
-            node_id = int(joined,0)
-            data = ""
-            for j in range(5,21,1):
-                data += y[j]
-            #data = data.decode("hex")
-            print("Node " + str(node_id) + " message:" + "\n" + data + "\n")
-        else:
-            print("No message")
+    print("No. " +str(t))
+    x= ser.read(22)
+    y=list(x)
+    if x != "":
+        joined = "0x"+y[1]+y[2]+y[3]
+        node_id = int(joined,0)
+        data=""
+        for j in range(5,21,1):
+            data+=y[j]
+        data=data.decode("hex")
+        """
+         ######### SQL BIT HERE ########################################
+        connect = connect("InsertUserNameHere","InsertTableNameHere")
+        cursor = cursor(connect)
+        add_message(str(node_id),str(data),cursor,connect)
+        ###############################################################
+        """
+        print("Node "+ str(node_id) + " message:"+"\n"+data+"\n")
+    else:
+        print("No message")
 
 #close port when finished
 def close_canusb(ser):
     ser.write(b"C\r") #Close CANUSB
-
     ser.close()
 
 
@@ -99,39 +99,12 @@ def check_input(ser,file):
             print("Message not sent!\n")
     print(file.tell())
 
-
-
+#Start of program
 ser = open_ports("COM7",115200,1)
 file = open("C:\Users\Ed\Desktop\CAN_Input.txt","r")
 for t in range(0,10000,1):
     sort_messages(ser,t)
     check_input(ser,file)
 close_canusb(ser)
-=======
-t=0
-while t<100: #arbitrary number to ensure port eventually closes
-    print("No. " +str(t))
-    x= ser.read(22)
-    y=list(x)
-    if x != "":
-        joined = "0x"+y[1]+y[2]+y[3]
-        node_id = int(joined,0)
-        data=""
-        for j in range(5,21,1):
-            data+=y[j]
-        data=data.decode("hex")
-         ######### SQL BIT HERE ########################################
-        connect = connect("InsertUserNameHere","InsertTableNameHere")
-        cursor = cursor(connect)
-        add_message(str(node_id),str(data),cursor,connect)
-        ###############################################################
-        print("Node "+ str(node_id) + " message:"+"\n"+data+"\n")
-        t+=1
-    else:
-        t+=1
-        print("No message")
-    #close port when finished
-ser.write(b"C\r") #Close CANUSB
-ser.close()
->>>>>>> origin/master
+
 
