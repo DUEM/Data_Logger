@@ -36,16 +36,27 @@ def threadFunc(conn, addr):
 #############################################################################################################################
         elif message1 == "Speed_data":
             #get speed data here (query sql database or get it live of the CAN)
+            #Query SQL
+            
+            ##########
             info = "Speed_data: "
             info += str(speed_data)
             msg1 = (str(info)).encode("utf-8")
         elif message1 == "Temp_data_all":
             #get temp data from all sources here (query sql database or get it live of the CAN)
+            #query SQL
+            
+            
+            ##########
             info = "Temp data" + str(source_id) + ": " #get the id of the node which sent the data
             info += str(temp_data)
             msg1 = (str(info)).encode("utf-8")
         elif message1 == "Bat_SOC":
-            #get SOC data (query sql database or get it live of the CAN)
+            #get SOC data (query sql database or get it live of the CAN) 
+            #going to query SQL
+            
+            
+            ###################
             info = "SOC: " 
             info += str(SOC)
             msg1 = (str(info)).encode("utf-8")
@@ -54,13 +65,20 @@ def threadFunc(conn, addr):
 ############################################################################################################################
         elif "_SEND_CAN_MESSAGE_" in message1:
             # checks if want to send a can message 
+            #send message to other programme here
             send_can_message(message_to_send) #some method to send a can message
+            #####################################
         elif "_SET_MESSAGE_FREQUENCY_" in message1:
             # checks if want to change the rate a messages are sent at 
             msg_freq = message1[-1] # set the frequency of messages
         elif "_SET_SAVE_FREQUENCY_" in message1:
             # checks if want to change how often to save on the loggers local storage
             save_freq = message1[-1] #set message save frequency
+        elif "_STOP_RECORDING_CAN_" in message1:
+            #send command to other programme here
+            
+            #####################################
+            
 
 #############################################################################################################################
 #******************************************************** Errors ***********************************************************#
