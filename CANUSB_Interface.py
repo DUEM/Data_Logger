@@ -62,16 +62,11 @@ def sort_messages(ser,t):
         for j in range(5,21,1):
             data+=y[j]
         data=data.decode("hex")
-        
-         ######### SQL BIT HERE ########################################
-        connect = connect("InsertUserNameHere","InsertTableNameHere")
-        cursor = cursor(connect)
-        add_message(str(node_id),str(data),cursor,connect)
-        ###############################################################
- 
         print("Node "+ str(node_id) + " message:"+"\n"+data+"\n")
+        return (str(node_id) , str(data)) #not sure if tuples work like this but you get the idea
     else:
         print("No message")
+        return 42               # error message
 
 #close port when finished
 def close_canusb(ser):
@@ -102,9 +97,12 @@ def check_input(ser,file):
 #Start of program
 ser = open_ports("COM7",115200,1)
 file = open("C:\Users\Ed\Desktop\CAN_Input.txt","r")
+connect = connect("InsertUserNameHere","InsertTableNameHere")
+cursor = cursor(connect)
 for t in range(0,10000,1):
-    sort_messages(ser,t)
+    message = sort_messages(ser,t)
     check_input(ser,file)
+    add_message(message[0],message[1],cursor,connect)
 close_canusb(ser)
 
 
