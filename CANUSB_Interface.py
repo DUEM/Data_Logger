@@ -60,9 +60,8 @@ def sort_messages(ser,t):
         node_id = int(joined,0)
         data=""
         for j in range(5,21,1):
-            data+=y[j]
-        data=data.decode("hex")
-        print("Node "+ str(node_id) + " message:"+"\n"+data+"\n")
+            data = data + ("0"+((hex(ord(y[j])))[2:]))[-2:]
+        print("Node "+ str(node_id) + " message:"+"\n"+(data.decode("hex"))+"\n")
         return (str(node_id) , str(data)) #not sure if tuples work like this but you get the idea
     else:
         print("No message")
