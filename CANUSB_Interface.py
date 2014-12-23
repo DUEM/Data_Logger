@@ -1,6 +1,6 @@
 #import SQL_Interface
 import serial
-"""
+
 import mysql.connector as sql
 import time   
 
@@ -31,7 +31,7 @@ def query(cursor,connect):
     cursor.execute(arg)
     return cursor
 #########################################################################################################################
-"""
+
 #open port
 def open_ports(port,baudrate,timeout):
     ser = serial.Serial()
@@ -62,13 +62,13 @@ def sort_messages(ser,t):
         for j in range(5,21,1):
             data+=y[j]
         data=data.decode("hex")
-        """
+        
          ######### SQL BIT HERE ########################################
         connect = connect("InsertUserNameHere","InsertTableNameHere")
         cursor = cursor(connect)
         add_message(str(node_id),str(data),cursor,connect)
         ###############################################################
-        """
+ 
         print("Node "+ str(node_id) + " message:"+"\n"+data+"\n")
     else:
         print("No message")
