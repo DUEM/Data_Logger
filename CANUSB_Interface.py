@@ -95,7 +95,7 @@ def check_input(ser,file):
 
 #Start of program
 ser = open_ports("COM7",115200,1)
-file = open("C:\Users\Ed\Desktop\CAN_Input.txt","r")
+file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","r")
 connect = connect("InsertUserNameHere","InsertTableNameHere")
 cursor = cursor(connect)
 for t in range(0,10000,1):
