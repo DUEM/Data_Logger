@@ -2,8 +2,7 @@ import SQL_Interface
 import serial
 
 import mysql.connector as sql
-import time   
-
+import time
 #################################### SQL FUNCTIONS WE WILL NEED #########################################################
 def connect(username,database):
     connect = sql.connect(user = username, database = database) # connected to database
@@ -32,6 +31,8 @@ def query(cursor,connect):
     return cursor
 #########################################################################################################################
 
+
+
 #open port
 def open_ports(port,baudrate,timeout):
     ser = serial.Serial()
@@ -41,15 +42,18 @@ def open_ports(port,baudrate,timeout):
     ser.open()
     if(ser.isOpen()):
         print("Port opened")
-        ser.write(b"\r\r\r") #Clear residual messages
-        ser.write(b"S6\r") #Set canusb speed of 500kbit/s
-        ser.write(b"O\r") #Open canusb
-        print(ser.read(5))
-        print("CANUSB activated")
     else:
         print( "Port did not open")
     return ser
-
+#Activate Canbus
+def open_canbus(ser):
+        global CANOPEN
+        CANOPEN=1
+        ser.write(b"\r\r\r") #Clear residual messages
+        ser.write(b"S6\r") #Set canusb speed of 500kbit/s
+        ser.write(b"O\r") #Open canusb
+        #print("CANUSB activated")
+        ser.read(5)
 #Sort messages
 def sort_messages(ser,t):
     print("No. " +str(t))
@@ -61,23 +65,45 @@ def sort_messages(ser,t):
         data=""
         for j in range(5,21,1):
             data = data + ("0"+((hex(ord(y[j])))[2:]))[-2:]
-        print("Node "+ str(node_id) + " message:"+"\n"+(data.decode("hex"))+"\n")
-        return (str(node_id) , str(data)) #not sure if tuples work like this but you get the idea
+        print(data.decode("hex"))
+        return(str(node_id),str(data))
+        print("Node "+ str(node_id) + " message:"+"\n"+data.decode("hex")+"\n")
     else:
         print("No message")
-        return 42               # error message
+        return 42
 
 #close port when finished
 def close_canusb(ser):
     ser.write(b"C\r") #Close CANUSB
-    ser.close()
+    ser.read(1)
+    global CANOPEN
+    CANOPEN=0
 
+def close_serial(ser):
+    ser.close()
 
 def check_input(ser,file):
     input = file.read(8)
     print("Message to send:")
     if input == "":
         print("No message sent")
+    elif input=="CLOSEBUS":
+        a=""
+        for x in input:
+            a = a + ("0"+((hex(ord(x)))[2:]))[-2:]
+        print(a.decode("hex"))
+        close_canusb(ser)
+        file.seek(file.tell()+2)
+    elif input=="OPENCBUS":
+        a=""
+        for x in input:
+            a = a + ("0"+((hex(ord(x)))[2:]))[-2:]
+        print(a.decode("hex"))
+        open_canbus(ser)
+        file.seek(file.tell()+2)
+    elif input=="CLOSESER":
+        close_serial(ser)
+        file.seek(file.tell()+2)
     else:
         file.seek(file.tell()+2)
         a=""
@@ -91,17 +117,23 @@ def check_input(ser,file):
             print("Message Sent\n")
         else:
             print("Message not sent!\n")
-    print(file.tell())
 
 #Start of program
+global CANOPEN
+CANOPEN = 0
 ser = open_ports("COM7",115200,1)
-file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","r")
+t=0
 connect = connect("InsertUserNameHere","InsertTableNameHere")
 cursor = cursor(connect)
-for t in range(0,10000,1):
-    message = sort_messages(ser,t)
+file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","r")
+while 1:
     check_input(ser,file)
-    add_message(message[0],message[1],cursor,connect)
-close_canusb(ser)
+    if CANOPEN==1:
+        message=sort_messages(ser,t)
+        add_message(message[0],message[1],cursor,connect)
+        t=t+1
+    else:
+        print("CAN Closed")
+
 
 

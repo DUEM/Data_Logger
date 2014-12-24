@@ -67,8 +67,11 @@ def threadFunc(conn, addr):
         elif "_SEND_CAN_MESSAGE_" in message1:
             # checks if want to send a can message 
             #send message to other programme here
-            send_can_message(message_to_send) #some method to send a can message
-            #####################################
+             #some method to send a can message
+            file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","a") #file path will need changing
+            file.write(message1.replace("_SEND_CAN_MESSAGE_","")+"\r\r")
+            file.close()
+            ##################################### 
         elif "_SET_MESSAGE_FREQUENCY_" in message1:
             # checks if want to change the rate a messages are sent at 
             msg_freq = message1[-1] # set the frequency of messages
