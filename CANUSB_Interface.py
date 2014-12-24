@@ -66,7 +66,7 @@ def sort_messages(ser,t):
         for j in range(5,21,1):
             data = data + ("0"+((hex(ord(y[j])))[2:]))[-2:]
         print(data.decode("hex"))
-        add_message(str(node_id),str(data),cursor,connect)
+        return(str(node_id),str(data))
         print("Node "+ str(node_id) + " message:"+"\n"+data.decode("hex")+"\n")
     else:
         print("No message")
@@ -129,7 +129,7 @@ file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","r")
 while 1:
     check_input(ser,file)
     if CANOPEN==1:
-        sort_messages(ser,t)
+        message=sort_messages(ser,t)
         add_message(message[0],message[1],cursor,connect)
         t=t+1
     else:
