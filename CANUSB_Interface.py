@@ -128,6 +128,8 @@ global CANOPEN
 CANOPEN = 0
 ser = open_ports("COM7",115200,1)
 t=0
+connect = connect("InsertUserNameHere","InsertTableNameHere")
+cursor = cursor(connect)
 file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","r")
 while 1:
     check_input(ser,file)
