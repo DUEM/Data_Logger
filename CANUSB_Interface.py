@@ -66,13 +66,8 @@ def sort_messages(ser,t):
         for j in range(5,21,1):
             data = data + ("0"+((hex(ord(y[j])))[2:]))[-2:]
         print(data.decode("hex"))
-        """
-         ######### SQL BIT HERE ########################################
-        connect = connect("InsertUserNameHere","InsertTableNameHere")
-        cursor = cursor(connect)
         add_message(str(node_id),str(data),cursor,connect)
         ###############################################################
-        """
         print("Node "+ str(node_id) + " message:"+"\n"+data.decode("hex")+"\n")
     else:
         print("No message")
