@@ -70,7 +70,7 @@ def sort_messages(ser,t):
         print("Node "+ str(node_id) + " message:"+"\n"+data.decode("hex")+"\n")
     else:
         print("No message")
-        return 41
+        return 42
 
 #close port when finished
 def close_canusb(ser):
