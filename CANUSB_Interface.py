@@ -1,5 +1,6 @@
 import SQL_Interface
 import serial
+import sys
 
 import mysql.connector as sql
 import time
@@ -34,11 +35,15 @@ def query(cursor,connect):
 
 
 #open port
-def open_ports(port,baudrate,timeout):
+def open_ports(file):
+    port =(file.read(8)).strip("")
+    print(port)
+    file.seek(file.tell()+2)
+    baudrate = int((file.read(8)).strip(""))
     ser = serial.Serial()
     ser.port = port
     ser.baudrate = baudrate
-    ser.timeout = timeout
+    ser.timeout = 1
     ser.open()
     if(ser.isOpen()):
         print("Port opened")
@@ -47,13 +52,15 @@ def open_ports(port,baudrate,timeout):
     return ser
 #Activate Canbus
 def open_canbus(ser):
-        global CANOPEN
-        CANOPEN=1
-        ser.write(b"\r\r\r") #Clear residual messages
-        ser.write(b"S6\r") #Set canusb speed of 500kbit/s
-        ser.write(b"O\r") #Open canusb
-        #print("CANUSB activated")
-        ser.read(5)
+    global CANOPEN
+    CANOPEN=1
+    ser.write(b"\r\r\r") #Clear residual messages
+    ser.write(b"S6\r") #Set canusb speed of 500kbit/s
+    ser.write(b"O\r") #Open canusb
+    #print("CANUSB activated")
+    ser.read(5)
+
+
 #Sort messages
 def sort_messages(ser,t):
     print("No. " +str(t))
@@ -80,9 +87,12 @@ def close_canusb(ser):
     CANOPEN=0
 
 def close_serial(ser):
+    close_canusb(ser)
     ser.close()
+    global CANOPEN
+    CANOPEN = 2
 
-def check_input(ser,file):
+def check_input(file,ser=0):
     input = file.read(8)
     print("Message to send:")
     if input == "":
@@ -104,6 +114,22 @@ def check_input(ser,file):
     elif input=="CLOSESER":
         close_serial(ser)
         file.seek(file.tell()+2)
+    elif input =="OPENSERL":
+        file.seek(file.tell()+2)
+        ser = open_ports(file)
+        file.seek(file.tell()+2)
+    elif input == "EXITPROG":
+        if CANOPEN == 2:
+            print("Program exited")
+            sys.exit()
+        else:
+            close_canusb(ser)
+            file.seek(file.tell()+2)
+            close_serial(ser)
+            file.seek(file.tell()+2)
+            print("Program exited")
+            sys.exit()
+
     else:
         file.seek(file.tell()+2)
         a=""
@@ -117,21 +143,24 @@ def check_input(ser,file):
             print("Message Sent\n")
         else:
             print("Message not sent!\n")
+    return ser
 
 #Start of program
 global CANOPEN
 CANOPEN = 0
-ser = open_ports("COM7",115200,1)
 t=0
+ser = 0
 connect = connect("InsertUserNameHere","InsertTableNameHere")
 cursor = cursor(connect)
 file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","r")
 while 1:
-    check_input(ser,file)
+    ser =check_input(file,ser)
     if CANOPEN==1:
         message=sort_messages(ser,t)
-        add_message(message[0],message[1],cursor,connect)
+        #add_message(message[0],message[1],cursor,connect)
         t=t+1
+    elif CANOPEN == 2:
+        print("Serial Port Closed")
     else:
         print("CAN Closed")
 
