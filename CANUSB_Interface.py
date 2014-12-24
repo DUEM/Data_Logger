@@ -157,7 +157,7 @@ while 1:
     ser =check_input(file,ser)
     if CANOPEN==1:
         message=sort_messages(ser,t)
-        #add_message(message[0],message[1],cursor,connect)
+        add_message(message[0],message[1],cursor,connect)
         t=t+1
     elif CANOPEN == 2:
         print("Serial Port Closed")
