@@ -67,10 +67,10 @@ def sort_messages(ser,t):
             data = data + ("0"+((hex(ord(y[j])))[2:]))[-2:]
         print(data.decode("hex"))
         add_message(str(node_id),str(data),cursor,connect)
-        ###############################################################
         print("Node "+ str(node_id) + " message:"+"\n"+data.decode("hex")+"\n")
     else:
         print("No message")
+        return 41
 
 #close port when finished
 def close_canusb(ser):
@@ -130,6 +130,7 @@ while 1:
     check_input(ser,file)
     if CANOPEN==1:
         sort_messages(ser,t)
+        add_message(message[0],message[1],cursor,connect)
         t=t+1
     else:
         print("CAN Closed")
