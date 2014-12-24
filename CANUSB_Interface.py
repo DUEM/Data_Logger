@@ -1,4 +1,4 @@
-#import SQL_Interface
+import SQL_Interface
 import serial
 
 import mysql.connector as sql
