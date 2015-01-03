@@ -1,5 +1,5 @@
 import socket, sys, threading #, socketserver
-import "SQL_interface.py" # in house sql library
+import random
 
 ## SERVER
 
@@ -68,9 +68,12 @@ def threadFunc(conn, addr):
             # checks if want to send a can message 
             #send message to other programme here
              #some method to send a can message
-            file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","a") #file path will need changing
-            file.write(message1.replace("_SEND_CAN_MESSAGE_","")+"\r\r")
-            file.close()
+            #file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","a") #file path will need changing
+            #file.write(message1.replace("_SEND_CAN_MESSAGE_","")+"\r\r")
+            #file.close()
+            message1 = message1.replace("_SEND_CAN_MESSAGE_","")
+            print("sending Can Message: " + message1)
+            msg1 = (str(message1)).encode("utf-8")
             ##################################### 
         elif "_SET_MESSAGE_FREQUENCY_" in message1:
             # checks if want to change the rate a messages are sent at 
@@ -80,9 +83,11 @@ def threadFunc(conn, addr):
             save_freq = message1[-1] #set message save frequency
         elif "_STOP_RECORDING_CAN_" in message1:
             #send command to other programme here
-            
-            #####################################
-            
+            print("stop")
+            ####################################
+        elif "_COM_LIVE_PLOT_BAT_" in message1:
+            message1 = "_BAT_" + str(random.randrange(1,10+1))
+            msg1 = (str(message1)).encode("utf-8")
 
 #############################################################################################################################
 #******************************************************** Errors ***********************************************************#
