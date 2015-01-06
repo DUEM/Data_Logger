@@ -86,7 +86,10 @@ def threadFunc(conn, addr):
             print("stop")
             ####################################
         elif "_COM_LIVE_PLOT_BAT_" in message1:
-            message1 = "_BAT_" + str(random.randrange(1,10+1))
+            message1 = "_PLOT_BAT_" + str(random.randrange(1,10+1))
+            msg1 = (str(message1)).encode("utf-8")
+        elif "_COM_SAVE_BAT_" in message1:
+            message1 = "_SAVE_BAT_" + str(random.randrange(1,10+1))
             msg1 = (str(message1)).encode("utf-8")
 
 #############################################################################################################################
