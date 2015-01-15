@@ -1,10 +1,10 @@
 
-import SQL_interface
+#import SQL_interface
 import serial
 import sys
 import mysql.connector as sql
 import time
-
+import binascii
 #################################### SQL FUNCTIONS WE WILL NEED #########################################################
 def connect(username,database):
     connect = sql.connect(user = username, database = database) # connected to database
@@ -36,56 +36,73 @@ def query(cursor,connect):
 
 #open port
 def open_ports(file):
-    port =(file.read(8)).strip("")
+    inputed=file.read(8)
+    while inputed =="":
+        inputed=file.read(8)
+        print("enter port")
+    port =inputed.strip("")
     print(port)
     file.seek(file.tell()+2)
-    baudrate = int((file.read(8)).strip(""))
-    ser = serial.Serial()
-    ser.port = port
-    ser.baudrate = baudrate
-    ser.timeout = 1
-    ser.open()
-    if(ser.isOpen()):
-        print("Port opened")
-    else:
-        print( "Port did not open")
-    return ser
+    inputed=file.read(8)
+    while inputed =="":
+        inputed=file.read(8)
+        print("enter rate")
+    baudrate = int(inputed.strip(""))
+    print(baudrate)
+    try:
+        ser = serial.Serial()
+        ser.port = port
+        ser.baudrate = baudrate
+        ser.timeout = 1
+        ser.open()
+        if(ser.isOpen()):
+            print("Port opened")
+        else:
+            print( "Port did not open")
+        return ser
+    except serial.SerialException:
+        print("CANBUS disconnected")
 #Activate Canbus
 def open_canbus(ser):
     global CANOPEN
     CANOPEN=1
-    ser.write(b"\r\r\r") #Clear residual messages
-    ser.write(b"S6\r") #Set canusb speed of 500kbit/s
-    ser.write(b"O\r") #Open canusb
-    #print("CANUSB activated")
-    x = ser.read(5)
-
-
-
+    try:
+        ser.write(b"\r\r\r") #Clear residual messages
+        ser.write(b"S6\r") #Set canusb speed of 500kbit/s
+        ser.write(b"O\r") #Open canusb
+        print("CANUSB activated")
+        x = ser.read(5)
+    except serial.SerialException:
+        print("CANBUS disconnected")
 
 #Sort messages
 def sort_messages(ser,t):
     print("No. " +str(t))
-    x= ser.read(22)
-    print(x)
-    y=list(x)
-    if x != b"":
-        node_id = chr(y[1])+chr(y[2])+chr(y[3])
-        data=""
-        for j in range(5,21,1):
-            data = data + chr(y[j])
-        print("Node "+node_id+ " message:"+"\n"+data+"\n")
-        return (node_id,data)
-    else:
-        print("No message")
-        return 42
+    try:
+        x= ser.read(22)
+        y=list(x)
+        if x != b"":
+            node_id = chr(y[1])+chr(y[2])+chr(y[3])
+            data=""
+            for j in range(5,21,1):
+                data = data + chr(y[j])
+            print("Node "+node_id+ " message:"+"\n"+data+"\n")
+            return (node_id,data)
+        else:
+            print("No message")
+            return 42
+    except serial.SerialException:
+        print("CANBUS disconnected")
 
 #close port when finished
 def close_canusb(ser):
-    ser.write(b"C\r") #Close CANUSB
-    ser.read(1)
-    global CANOPEN
-    CANOPEN=0
+    try:
+        ser.write(b"C\r") #Close CANUSB
+        ser.read(1)
+        global CANOPEN
+        CANOPEN=0
+    except serial.SerialException:
+        print("CANBUS disconnected")
 
 def close_serial(ser):
     close_canusb(ser)
@@ -126,16 +143,21 @@ def check_input(file,ser=0):
             sys.exit()
     else:
         file.seek(file.tell()+2)
-        print(input)
-        to_send = "t0008"+input+"\r"
-        ser.write(b"t000812345678\r")
-        x=ser.read(2)
-        while x != "z\r":
-            ser.write(b"t000812345678\r")
+        a=""
+        print("Input is " + input)
+        for x in input:
+            a = a + format(ord(x), "x")
+        try:
+            ser.write(b"t1118"+bytes(a,'utf-8')+b"\r")
             x=ser.read(2)
-            print(x)
-            print("Message not sent!")
-        print("Message Sent")
+            while x != b"z\r":
+                print("Message not sent!")
+                ser.write(b"t1118"+bytes(a,'utf-8')+b"\r")
+                x=ser.read(2)
+            print("Message Sent")
+        except serial.SerialException:
+            print("CANBUS disconnected")
+
     return ser
 
 #Start of program
@@ -143,14 +165,14 @@ global CANOPEN
 CANOPEN = 0
 t=0
 ser = 0
-connect = connect("InsertUserNameHere","InsertTableNameHere")
-cursor = cursor(connect)
+#connect = connect("InsertUserNameHere","InsertTableNameHere")
+#cursor = cursor(connect)
 file = open(r"C:\Users\Ed\Desktop\CAN_Input.canusb","r")
 while 1:
     ser =check_input(file,ser)
     if CANOPEN==1:
         message=sort_messages(ser,t)
-        add_message(message[0],message[1],cursor,connect)
+        #add_message(message[0],message[1],cursor,connect)
         t=t+1
     elif CANOPEN == 2:
         print("Serial Port Closed")
