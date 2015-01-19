@@ -36,16 +36,16 @@ def query(cursor,connect):
 
 #open port
 def open_ports(file):
-    inputed=file.read(8)
+    inputed=file.read(10)
     while inputed =="":
-        inputed=file.read(8)
+        inputed=file.read(10)
         print("enter port")
     port =inputed.strip("")
     print(port)
     file.seek(file.tell()+2)
-    inputed=file.read(8)
+    inputed=file.read(6)
     while inputed =="":
-        inputed=file.read(8)
+        inputed=file.read(6)
         print("enter rate")
     baudrate = int(inputed.strip(""))
     print(baudrate)
@@ -167,7 +167,11 @@ t=0
 ser = 0
 #connect = connect("InsertUserNameHere","InsertTableNameHere")
 #cursor = cursor(connect)
+config = open(r"C:\Users\Ed\Desktop\CAN_Config.canusb","r")
+ser = open_ports(config)
+open_canbus(ser)
 file = open(r"C:\Users\Ed\Desktop\CAN_Input.canusb","r")
+
 while 1:
     ser =check_input(file,ser)
     if CANOPEN==1:
