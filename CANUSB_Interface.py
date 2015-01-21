@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import SQL_Interface
 import serial
 import sys
