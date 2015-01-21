@@ -2,7 +2,7 @@
 #import SQL_interface
 import serial
 import sys
-import mysql.connector as sql
+#import mysql.connector as sql
 import time
 import binascii
 #################################### SQL FUNCTIONS WE WILL NEED #########################################################
