@@ -167,10 +167,10 @@ t=0
 ser = 0
 #connect = connect("InsertUserNameHere","InsertTableNameHere")
 #cursor = cursor(connect)
-config = open(r"C:\Users\Ed\Desktop\CAN_Config.canusb","r")
+config = open("CAN_Config.canusb","r")
 ser = open_ports(config)
 open_canbus(ser)
-file = open(r"C:\Users\Ed\Desktop\CAN_Input.canusb","r")
+file = open("CAN_Input.canusb","r")
 
 while 1:
     ser =check_input(file,ser)
