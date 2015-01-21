@@ -36,9 +36,9 @@ def query(cursor,connect):
 
 #open port
 def open_ports(file):
-    inputed=file.read(10)
+    inputed=file.read(12)
     while inputed =="":
-        inputed=file.read(10)
+        inputed=file.read(12)
         print("enter port")
     port =inputed.strip("")
     print(port)
