@@ -69,9 +69,9 @@ def threadFunc(conn, addr):
             # checks if want to send a can message 
             #send message to other programme here
              #some method to send a can message
-            #file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","a") #file path will need changing
-            #file.write(message1.replace("_SEND_CAN_MESSAGE_","")+"\r\r")
-            #file.close()
+            file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","a") #file path will need changing
+            file.write(message1.replace("_SEND_CAN_MESSAGE_","")+"\r\r")
+            file.close()
             message1 = message1.replace("_SEND_CAN_MESSAGE_","")
             print("sending Can Message: " + message1)
             msg1 = (str(message1)).encode("utf-8")
@@ -86,13 +86,33 @@ def threadFunc(conn, addr):
             #send command to other programme here
             print("stop")
             ####################################
+        elif "_MONITOR_CAN_BUS_" == message1:
+            # get live can bus activity and send to client
+            # probs create a thread to wait for activity and send to the client
+            message1 = "Displaying Live CAN Activity"
+            msg1 = (str(message1)).encode("utf-8")
+        elif "_STOP_MONITOR_CAN_BUS_" == message1:
+            #stops sending live CAN data
+            message1 = "No Longer Displaying Live CAN Activity"
+            msg1 = (str(message1)).encode("utf-8")
         elif "_COM_LIVE_PLOT_BAT_" in message1:
-            message1 = "_PLOT_BAT_" + str(random.randrange(1,10+1))
+            message1 = "_COM_LIVE_PLOT_BAT_" + str(random.randrange(1,10+1))
             msg1 = (str(message1)).encode("utf-8")
         elif "_COM_SAVE_BAT_" in message1:
-            message1 = "_SAVE_BAT_" + str(random.randrange(1,10+1))
+            message1 = "_COM_SAVE_BAT_" + str(random.randrange(1,10+1))
             msg1 = (str(message1)).encode("utf-8")
-
+        elif "_COM_LIVE_PLOT_SPEED_" in message1:
+            message1 = "_COM_LIVE_PLOT_SPEED_" + str(random.randrange(1,10+1))
+            msg1 = (str(message1)).encode("utf-8")
+        elif "_COM_SAVE_SPEED_" in message1:
+            message1 = "_COM_SAVE_SPEED_" + str(random.randrange(1,10+1))
+            msg1 = (str(message1)).encode("utf-8")
+        elif "_COM_LIVE_PLOT_TEMP_" in message1:
+            message1 = "_COM_LIVE_PLOT_TEMP_" + str(random.randrange(1,10+1))
+            msg1 = (str(message1)).encode("utf-8")
+        elif "_COM_SAVE_TEMP_" in message1:
+            message1 = "_COM_SAVE_TEMP_" + str(random.randrange(1,10+1))
+            msg1 = (str(message1)).encode("utf-8")
 #############################################################################################################################
 #******************************************************** Errors ***********************************************************#
 #############################################################################################################################
@@ -163,7 +183,7 @@ def main():
     global db_clients_INFO
     global db_clients_IP
     host = ''
-    port = 51423
+    port = 51432
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind((host,port))
