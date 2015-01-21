@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import socket, sys, threading #, socketserver
 import random
 
