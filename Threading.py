@@ -69,7 +69,7 @@ def threadFunc(conn, addr):
             # checks if want to send a can message 
             #send message to other programme here
              #some method to send a can message
-            file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","a") #file path will need changing
+            file = open("CAN_Input.canusb","a") #file path will need changing
             file.write(message1.replace("_SEND_CAN_MESSAGE_","")+"\r\r")
             file.close()
             message1 = message1.replace("_SEND_CAN_MESSAGE_","")
