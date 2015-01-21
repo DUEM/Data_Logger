@@ -1,36 +1,36 @@
 #!/usr/bin/env python3
-import SQL_Interface
+#import SQL_Interface
 import serial
 import sys
 
-import mysql.connector as sql
+#import mysql.connector as sql
 import time
 #################################### SQL FUNCTIONS WE WILL NEED #########################################################
-def connect(username,database):
-    connect = sql.connect(user = username, database = database) # connected to database
-    return connect
-def cursor(connect):
-    cursor = connect.cursor()
-    return cursor
-def add_message(node_id,data,cursor,connect):
-    time1 = time.strftime('%Y-%m-%d %H:%M:%S')
+#def connect(username,database):
+#    connect = sql.connect(user = username, database = database) # connected to database
+#    return connect
+#def cursor(connect):
+#    cursor = connect.cursor()
+#    return cursor
+#def add_message(node_id,data,cursor,connect):
+#    time1 = time.strftime('%Y-%m-%d %H:%M:%S')
 
     ###################################### Creating the Argument #######################
-    add_message = "INSERT INTO can ( `Time`, `Node ID`, `Data` )VALUES ('"
-    add_message += time1
-    add_message += "','"
-    add_message += node_id
-    add_message += "','"
-    add_message += data
-    add_message += "')"
-    cursor.execute(add_message) 
-    connect.commit()
-    return 1
-def query(cursor,connect):
-    arg = ("SELECT `Node ID`,`Time`, `Data` FROM can WHERE `Node ID` BETWEEN 0 AND 1000")
+#    add_message = "INSERT INTO can ( `Time`, `Node ID`, `Data` )VALUES ('"
+#    add_message += time1
+#    add_message += "','"
+#    add_message += node_id
+#    add_message += "','"
+#    add_message += data
+#    add_message += "')"
+#    cursor.execute(add_message) 
+#    connect.commit()
+#    return 1
+#def query(cursor,connect):
+#    arg = ("SELECT `Node ID`,`Time`, `Data` FROM can WHERE `Node ID` BETWEEN 0 AND 1000")
     # make query editable
-    cursor.execute(arg)
-    return cursor
+#    cursor.execute(arg)
+#    return cursor
 #########################################################################################################################
 
 
@@ -151,14 +151,14 @@ global CANOPEN
 CANOPEN = 0
 t=0
 ser = 0
-connect = connect("InsertUserNameHere","InsertTableNameHere")
-cursor = cursor(connect)
+#connect = connect("InsertUserNameHere","InsertTableNameHere")
+#cursor = cursor(connect)
 file = open("C:\Users\Ed\Desktop\CAN_Input.canusb","r")
 while 1:
     ser =check_input(file,ser)
     if CANOPEN==1:
         message=sort_messages(ser,t)
-        add_message(message[0],message[1],cursor,connect)
+ #       add_message(message[0],message[1],cursor,connect)
         t=t+1
     elif CANOPEN == 2:
         print("Serial Port Closed")
