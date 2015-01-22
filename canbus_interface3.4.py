@@ -170,7 +170,10 @@ ser = 0
 config = open("CAN_Config.canusb","r")
 ser = open_ports(config)
 open_canbus(ser)
-file = open("CAN_Input.canusb","r")
+sync = open("CAN_TimeSync.canusb","r")
+line = sync.readline()
+print(line)
+file = open(line,"r")
 
 while 1:
     ser =check_input(file,ser)

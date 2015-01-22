@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 import socket, sys, threading #, socketserver
 import random
-
+import datetime
 ## SERVER
 
-def threadFunc(conn, addr):
+def threadFunc(conn, addr,filename):
     while 1:
         try: #getting message
             message1 = conn.recv(2048)
@@ -69,7 +69,7 @@ def threadFunc(conn, addr):
             # checks if want to send a can message 
             #send message to other programme here
              #some method to send a can message
-            file = open("CAN_Input.canusb","a") #file path will need changing
+            file = open(filename,"a") #file path will need changing
             file.write(message1.replace("_SEND_CAN_MESSAGE_","")+"\r\r")
             file.close()
             message1 = message1.replace("_SEND_CAN_MESSAGE_","")
@@ -189,13 +189,25 @@ def main():
     s.bind((host,port))
     s.listen(5)
     print("Starting server")
+
+    time = datetime.datetime.now()
+    filename = "CANUSB_Input"+str(time)
+    filename =filename.replace(" ","-")
+    filename =filename.replace(":","-")
+    filename =filename.replace(".","-")
+    filename = filename +".canusb"
+    print(filename)
+    file=open("CAN_TimeSync.canusb","w")
+    file.write(filename)
+    file.close()
+
     while 1:
         conn, addr = s.accept()
         c = con_info(addr)
         if c[0][4][0] not in db_clients_IP:
             db_clients_IP.append(c[0][4][0])
             db_clients_INFO.append(c)
-        t = threading.Thread(target = threadFunc, args = (conn, addr))
+        t = threading.Thread(target = threadFunc, args = (conn, addr,filename))
         print("Connected with: " + addr[0] + ":" + str(addr[1]))
         t.start()
     s.close()
