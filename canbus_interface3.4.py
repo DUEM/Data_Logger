@@ -7,8 +7,8 @@ import time
 import binascii
 
 #################################### SQL FUNCTIONS WE WILL NEED #########################################################
-def connect(username,database):
-    connect = sql.connect(user = username, database = database) # connected to database
+def connect(username,password,database):
+    connect = sql.connect(user = username,password=password, database = database) # connected to database
     return connect
 def cursor(connect):
     cursor = connect.cursor()
@@ -166,7 +166,6 @@ def check_input(file,ser=0):
 global CANOPEN
 CANOPEN = 0
 t=0
-ser = connect = connect("ed","test")
 cursor = cursor(connect)
 config = open("CAN_Config2.canusb","r")
 

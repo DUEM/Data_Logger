@@ -1,8 +1,8 @@
 import mysql.connector as sql
 import time   
 
-def connect(username,database):
-    connect = sql.connect(user = username, database = database) # connected to database
+def connect(username,password,database):
+    connect = sql.connect(user = username,password=password, database = database) # connected to database
     return connect
 def cursor(connect):
     cursor = connect.cursor()
@@ -30,7 +30,8 @@ def query(cursor,connect):
     
 username = str(input("Enter Username: "))
 database = str(input("Enter Database: "))
-connect = connect(username,database)
+password = str(input("Enter Password: "))
+connect = connect(username,password,database)
 cursor = cursor(connect)
 while 1==1:
     print("1) Adding Data to Table")
