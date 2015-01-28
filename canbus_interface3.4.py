@@ -1,10 +1,10 @@
 
-import SQL_interface
+#import SQL_interface
 import serial
 import sys
 import mysql.connector as sql
-import time
-import binascii
+import datetime
+import random
 
 #################################### SQL FUNCTIONS WE WILL NEED #########################################################
 def connect(username,password,database):
@@ -14,8 +14,8 @@ def cursor(connect):
     cursor = connect.cursor()
     return cursor
 def add_message(node_id,data,cursor,connect):
-    time1 = time.strftime('%Y-%m-%d %H:%M:%S')
-
+    time1 = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+    print(time1)
     ###################################### Creating the Argument #######################
     add_message = "INSERT INTO can ( `Time`, `Node ID`, `Data` )VALUES ('"
     add_message += time1
@@ -24,6 +24,7 @@ def add_message(node_id,data,cursor,connect):
     add_message += "','"
     add_message += data
     add_message += "')"
+    print(add_message)
     cursor.execute(add_message) 
     connect.commit()
     return 1
@@ -166,11 +167,16 @@ def check_input(file,ser=0):
 global CANOPEN
 CANOPEN = 0
 t=0
+username = str(input("Enter Username: "))
+database = str(input("Enter Database: "))
+password = str(input("Enter Password: "))
+connect = connect(username,password,database)
 cursor = cursor(connect)
-config = open("CAN_Config2.canusb","r")
 
+config = open("CAN_Config2.canusb","r")
+ser=0
 ser = open_ports(config)
-open_canbus(ser)
+#open_canbus(ser)
 sync = open("CAN_TimeSync.canusb","r")
 line = sync.readline()
 print(line)
@@ -181,11 +187,13 @@ while 1:
     if CANOPEN==1:
         message=sort_messages(ser,t)
         add_message(message[0],message[1],cursor,connect)
+
         t=t+1
     elif CANOPEN == 2:
         print("Serial Port Closed")
     else:
         print("CAN Closed")
+        add_message(str(random.getrandbits(24)),str(random.getrandbits(64)),cursor,connect)
 
 
 
