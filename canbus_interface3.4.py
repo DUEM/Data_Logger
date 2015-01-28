@@ -1,10 +1,11 @@
 
-#import SQL_interface
+import SQL_interface
 import serial
 import sys
-#import mysql.connector as sql
+import mysql.connector as sql
 import time
 import binascii
+
 #################################### SQL FUNCTIONS WE WILL NEED #########################################################
 def connect(username,database):
     connect = sql.connect(user = username, database = database) # connected to database
@@ -37,6 +38,7 @@ def query(cursor,connect):
 #open port
 def open_ports(file):
     inputed=file.read(12)
+    inputed =inputed.strip("")
     while inputed =="":
         inputed=file.read(12)
         print("enter port")
@@ -164,10 +166,10 @@ def check_input(file,ser=0):
 global CANOPEN
 CANOPEN = 0
 t=0
-ser = 0
-#connect = connect("InsertUserNameHere","InsertTableNameHere")
-#cursor = cursor(connect)
-config = open("CAN_Config.canusb","r")
+ser = connect = connect("ed","test")
+cursor = cursor(connect)
+config = open("CAN_Config2.canusb","r")
+
 ser = open_ports(config)
 open_canbus(ser)
 sync = open("CAN_TimeSync.canusb","r")
@@ -179,7 +181,7 @@ while 1:
     ser =check_input(file,ser)
     if CANOPEN==1:
         message=sort_messages(ser,t)
-        #add_message(message[0],message[1],cursor,connect)
+        add_message(message[0],message[1],cursor,connect)
         t=t+1
     elif CANOPEN == 2:
         print("Serial Port Closed")

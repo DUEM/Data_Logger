@@ -200,6 +200,8 @@ def main():
     file=open("CAN_TimeSync.canusb","w")
     file.write(filename)
     file.close()
+    log=open(filename,"w")
+    log.close()
 
     while 1:
         conn, addr = s.accept()
