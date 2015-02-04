@@ -1,5 +1,3 @@
-
-#import SQL_interface
 import serial
 import sys
 import mysql.connector as sql
@@ -8,7 +6,7 @@ import random
 
 #################################### SQL FUNCTIONS WE WILL NEED #########################################################
 def connect(username,password,database):
-    connect = sql.connect(user = username,password=password, database = database) # connected to database
+    connect = sql.connect( user = username,password=password, database = database) # connected to database
     return connect
 def cursor(connect):
     cursor = connect.cursor()
@@ -25,7 +23,7 @@ def add_message(node_id,data,cursor,connect):
     add_message += data
     add_message += "')"
     print(add_message)
-    cursor.execute(add_message) 
+    cursor.execute(add_message)
     connect.commit()
     return 1
 def query(cursor,connect):
@@ -34,7 +32,6 @@ def query(cursor,connect):
     cursor.execute(arg)
     return cursor
 #########################################################################################################################
-
 
 #open port
 def open_ports(file):
@@ -71,10 +68,13 @@ def open_canbus(ser):
     CANOPEN=1
     try:
         ser.write(b"\r\r\r") #Clear residual messages
+
+
         ser.write(b"S6\r") #Set canusb speed of 500kbit/s
         ser.write(b"O\r") #Open canusb
         print("CANUSB activated")
         x = ser.read(5)
+        print(x)
     except serial.SerialException:
         print("CANBUS disconnected")
 
@@ -82,18 +82,29 @@ def open_canbus(ser):
 def sort_messages(ser,t):
     print("No. " +str(t))
     try:
-        x= ser.read(22)
-        y=list(x)
-        if x != b"":
-            node_id = chr(y[1])+chr(y[2])+chr(y[3])
-            data=""
-            for j in range(5,21,1):
-                data = data + chr(y[j])
-            print("Node "+node_id+ " message:"+"\n"+data+"\n")
-            return (node_id,data)
+        start_message= ser.read(1)
+        if  start_message.decode('utf-8') == "t":
+            node_id_bytes= ser.read(3)
+            node_array=list(node_id_bytes)
+            node_id = chr(node_array[0])+chr(node_array[1])+chr(node_array[2])
+            length= ser.read(1)
+            length.decode('utf-8')
+            length=int(length)*2
+            message_bytes= ser.read(length)
+            message_array=list(message_bytes)
+            message=""
+            for j in range(0,length,1):
+                message += chr(message_array[j])
+            print("Node "+node_id+ " message:"+"\n"+message+"\n")
+            end_message = ser.read(1)
+            if end_message != "\r":
+                #do something else
+                a=1
+            message=(str(bin(int(message,16)))).lstrip("0b")
+            return (node_id,message)
         else:
             print("No message")
-            return 42
+            return (0,0)
     except serial.SerialException:
         print("CANBUS disconnected")
 
@@ -114,7 +125,8 @@ def close_serial(ser):
     CANOPEN = 2
 
 def check_input(file,ser=0):
-    input = file.read(8)
+    input = file.read(4)
+
     print("Message to send:")
     if input == "":
         print("No message sent")
@@ -145,13 +157,16 @@ def check_input(file,ser=0):
             print("Program exited")
             sys.exit()
     else:
+        input_array=list(input)
+        message_bytes=file.read(2*int(input_array[3]))
         file.seek(file.tell()+2)
         a=""
-        print("Input is " + input)
-        for x in input:
-            a = a + format(ord(x), "x")
+        print("Input is " + input+message_bytes)
+        joined=input+message_bytes
+        for x in joined:
+            a +=x
         try:
-            ser.write(b"t1118"+bytes(a,'utf-8')+b"\r")
+            ser.write(b"t"+bytes(a,'utf-8')+b"\r")
             x=ser.read(2)
             while x != b"z\r":
                 print("Message not sent!")
@@ -167,16 +182,19 @@ def check_input(file,ser=0):
 global CANOPEN
 CANOPEN = 0
 t=0
-username = str(input("Enter Username: "))
-database = str(input("Enter Database: "))
-password = str(input("Enter Password: "))
+#username = str(input("Enter Username: "))
+username="ed"
+#database = str(input("Enter Database: "))
+database="test"
+#password = str(input("Enter Password: "))
+password="password"
 connect = connect(username,password,database)
 cursor = cursor(connect)
 
 config = open("CAN_Config2.canusb","r")
 ser=0
 ser = open_ports(config)
-#open_canbus(ser)
+open_canbus(ser)
 sync = open("CAN_TimeSync.canusb","r")
 line = sync.readline()
 print(line)
@@ -186,14 +204,13 @@ while 1:
     ser =check_input(file,ser)
     if CANOPEN==1:
         message=sort_messages(ser,t)
-        add_message(message[0],message[1],cursor,connect)
-
+        if message[1]!=0:
+            add_message(message[0],message[1],cursor,connect)
         t=t+1
     elif CANOPEN == 2:
         print("Serial Port Closed")
     else:
         print("CAN Closed")
-        add_message(str(random.getrandbits(24)),str(random.getrandbits(64)),cursor,connect)
 
 
 
