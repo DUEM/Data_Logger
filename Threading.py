@@ -99,11 +99,9 @@ def threadFunc(conn, addr,filename):
             a_long_time="499"
             latest_message = SQL_interface.query(cursor,connect,"Node ID",last_message_time,a_long_time)
             for (Time, Node_ID, Data) in latest_message:
-                message1 = "_MONITOR_CAN_BUS_"+"{}, {} {}".format(Time, Node_ID, Data)
+                message1 = "_MONITOR_CAN_BUS_"+"{1}, {0} {2}".format(Time, Node_ID, Data)
+                print(message1)
                 msg1 = (str(message1)).encode("utf-8")
-
-
-
         elif "_STOP_MONITOR_CAN_BUS_" == message1:
             #stops sending live CAN data
             message1 = "No Longer Displaying Live CAN Activity"

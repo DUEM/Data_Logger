@@ -98,7 +98,8 @@ def sort_messages(ser,t):
             if end_message != "\r":
                 #do something else
                 a=1
-            message=(str(bin(int(message,16)))).lstrip("0b")
+            #message=str(int(message,16))
+
             return (node_id,message)
         else:
             print("No message")
