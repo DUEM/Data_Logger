@@ -22,7 +22,7 @@ def add_message(node_id,data,cursor,connect):
     cursor.execute(add_message) 
     connect.commit()
     return 1
-def query(cursor,connect):
+def query(cursor,connect,filterItem,LowfiltRange,HighfiltRange):
     
     #################################### Creating the Argument #########################
     query_message = "SELECT `Node ID`,`Time`, `Data` FROM can WHERE "
@@ -34,9 +34,9 @@ def query(cursor,connect):
     HighfiltRange =  str(input("ENTER UPPER LIMIT HERE: "))
     query_message += LowfiltRange
     query_message += " AND "
-    query_message += LowfiltRange
+    query_message += HighfiltRange
     print(query_message)
-    arg = ("SELECT `Node ID`,`Time`, `Data` FROM can WHERE `Node ID` BETWEEN 0 AND 1000")
+    #arg = ("SELECT `Node ID`,`Time`, `Data` FROM can WHERE `Node ID` BETWEEN 0 AND 1000")
     # make query editable
     cursor.execute(query_message)
     return cursor
