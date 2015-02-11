@@ -83,6 +83,21 @@ comm.daemon = True
 comm.start()
 ############################################################################
 
+################################ Can Monitor ###############################
+def can_monitor(Qout):
+        message = Qout.get() # get command to send forr more data
+        Qout.task_done()
+        stop_message = "_STOP_"
+        while True:
+                data = Qout.get()
+                if data == stop_message:
+                        break
+                data = data.replace(message,"")
+                OutShell.insert(END,data+' \n')
+                OutShell.see(END)
+                Qout.task_done()
+                q.put(message)
+                
 ################################# Live Plot #################################
 def bat_plot(Qout):
         message = Qout.get() # get command to send forr more data
@@ -243,6 +258,27 @@ def SaveDataCSV(variable, command, qout, enab_but, disab_but):
         toggle(disab_but)
         return 1
 
+def CanMonitor(variable, command, qout, enab_but, disab_but):
+         # clears the que before it is used
+        while qout.empty() == False:            
+                qout.get()
+                qout.task_done()
+        #start thread
+        MON = threading.Thread(target = lambda: can_monitor(qout))
+        MON.daemon = True
+        MON.start()
+
+        message = command
+        qout.put(message)
+        # request data from server
+        q.put(message)
+
+        # toggle buttons
+        toggle(enab_but)
+        toggle(disab_but)
+        
+        return 1
+
 def SendStopMessage(qout, enab_but, disab_but):
         #send stop message
         message = "_STOP_"
@@ -317,8 +353,8 @@ def Buttons(): # creates buttons
         but12=Button(Inputs, text='Stop Monitoring All CAN Activity',  width=30, state='disabled')  
         but12.grid(row=6,column=1)
         
-        but11.config( command= lambda: SendCommands("_MONITOR_CAN_BUS_", but11, but12))
-        but12.config( command= lambda: SendCommands("_STOP_MONITOR_CAN_BUS_", but11, but12))
+        but11.config( command= lambda: SendCommands('Can Message', "_MONITOR_CAN_BUS_",q8, but11, but12))
+        but12.config( command= lambda: SendStopMessage(q8, but11, but12))
 
         #Live Plot Temperature
         but13=Button(Inputs, text='Live Plot Temperature',  width=30, state='normal')  
