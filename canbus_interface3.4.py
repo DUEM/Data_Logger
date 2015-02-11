@@ -68,8 +68,6 @@ def open_canbus(ser):
     CANOPEN=1
     try:
         ser.write(b"\r\r\r") #Clear residual messages
-
-
         ser.write(b"S6\r") #Set canusb speed of 500kbit/s
         ser.write(b"O\r") #Open canusb
         print("CANUSB activated")
@@ -187,7 +185,7 @@ username="ed"
 #database = str(input("Enter Database: "))
 database="test"
 #password = str(input("Enter Password: "))
-password="password"
+password="runrun93"
 connect = connect(username,password,database)
 cursor = cursor(connect)
 

@@ -26,12 +26,9 @@ def query(cursor,connect,filterItem,LowfiltRange,HighfiltRange):
     
     #################################### Creating the Argument #########################
     query_message = "SELECT `Node ID`,`Time`, `Data` FROM can WHERE "
-    filterItem = str(input("ENTER FILTER TERM HERE: "))
     query_message += "`"
     query_message += filterItem
     query_message += "` BETWEEN "
-    LowfiltRange =  str(input("ENTER LOWER LIMIT HERE: "))
-    HighfiltRange =  str(input("ENTER UPPER LIMIT HERE: "))
     query_message += LowfiltRange
     query_message += " AND "
     query_message += HighfiltRange
@@ -44,5 +41,4 @@ def query(cursor,connect,filterItem,LowfiltRange,HighfiltRange):
 username = str(input("Enter Username: "))
 database = str(input("Enter Database: "))
 password = str(input("Enter Password: "))
-connect = connect(username,password,database)
-cursor = cursor(connect)
+

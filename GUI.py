@@ -24,11 +24,13 @@ q6 = Queue()    # talk to  live plot temperature thread
 q6.join()
 q7 = Queue()    # talk to  saving csv temperature thread
 q7.join()
+q8 = Queue()
+q8.join()
 ###################### Sending/Recieving data bit ###########################
 def comunication():
         ## CLIENT
         t = True
-        host = "localhost"
+        host = "10.245.124.17"
         port = 51432
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
@@ -66,7 +68,9 @@ def comunication():
                         elif "_COM_LIVE_PLOT_TEMP_" in msg2:
                                 q6.put(msg2)
                         elif "_COM_SAVE_TEMP_" in msg2:
-                                q7.put(msg2) 
+                                q7.put(msg2)
+                        elif "_COM_CAN_MON_" in msg2:
+                                q8.put(msg2)
                         else:
                                 OutShell.insert(END,'\n'+'>'*80+'\n'+msg2+'\n'+'<'*80+'\n\n')
                                 OutShell.see(END)

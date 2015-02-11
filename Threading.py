@@ -2,10 +2,13 @@
 import socket, sys, threading #, socketserver
 import random
 import datetime
+import SQL_interface
 ## SERVER
 
 def threadFunc(conn, addr,filename):
     while 1:
+        connect = connect(username,password,database)
+        cursor = cursor(connect)
         try: #getting message
             message1 = conn.recv(2048)
             if not len(message1):
@@ -90,7 +93,17 @@ def threadFunc(conn, addr,filename):
             # get live can bus activity and send to client
             # probs create a thread to wait for activity and send to the client
             message1 = "Displaying Live CAN Activity"
-            msg1 = (str(message1)).encode("utf-8")
+            #last_message_time="2015-02-04 16:20:26.558000"
+            last_message_time = "401"
+            #a_long_time="2020-02-04 16:20:26.558000"
+            a_long_time="420"
+            latest_message = SQL_interface.query(cursor,connect,"Node ID",last_message_time,a_long_time)
+            for (Time, Node_ID, Data) in latest_message:
+                message1 = "_COM_CAN_MON_"+"{}, {} {}".format(Time, Node_ID, Data)
+                msg1 = (str(message1)).encode("utf-8")
+
+
+
         elif "_STOP_MONITOR_CAN_BUS_" == message1:
             #stops sending live CAN data
             message1 = "No Longer Displaying Live CAN Activity"
@@ -180,6 +193,7 @@ def get_movie_db():
 
 
 def main():
+
     global db_clients_INFO
     global db_clients_IP
     host = ''
