@@ -24,8 +24,9 @@ q6 = Queue()    # talk to  live plot temperature thread
 q6.join()
 q7 = Queue()    # talk to  saving csv temperature thread
 q7.join()
-q8 = Queue()
+q8 = Queue()    # monitor can messages
 q8.join()
+
 ###################### Sending/Recieving data bit ###########################
 def comunication():
         ## CLIENT
@@ -69,7 +70,7 @@ def comunication():
                                 q6.put(msg2)
                         elif "_COM_SAVE_TEMP_" in msg2:
                                 q7.put(msg2)
-                        elif "_COM_CAN_MON_" in msg2:
+                        elif "_MONITOR_CAN_BUS_" in msg2:
                                 q8.put(msg2)
                         else:
                                 OutShell.insert(END,'\n'+'>'*80+'\n'+msg2+'\n'+'<'*80+'\n\n')
@@ -83,6 +84,26 @@ comm.daemon = True
 comm.start()
 ############################################################################
 
+################################ Can Monitor ###############################
+def can_monitor(Qout):
+        message = Qout.get() # get command to send forr more data
+        print(message)
+        Qout.task_done()
+        stop_message = "_STOP_"
+        prevDat = "a"
+        while True:
+                
+                data = Qout.get()
+                if data == stop_message:
+                        print("CLOSE")
+                        break
+                data = data.replace(message,"")
+                if data != prevDat:
+                        OutShell.insert(END,data+' \n')
+                        OutShell.see(END)
+                        prevDat = data
+                Qout.task_done()
+                q.put(message)
 ################################# Live Plot #################################
 def bat_plot(Qout):
         message = Qout.get() # get command to send forr more data
@@ -150,13 +171,14 @@ def CSVsave(qout):
 
 def send_can(): # function that sends can message
         Inmessage = CanInput.get()
-        if intType == 0:
-                message = int(Inmessage, 16)
-        else:
-                message = int(Inmessage,10)
-        OutShell.insert(END,'Sending Can Message: '+message+'\n') 
+        #if inpType == 0:
+        #        message = int(Inmessage, 16)
+        #else:
+                #message = int(Inmessage,16)
+        message = Inmessage
+        OutShell.insert(END,'Sending Can Message: '+str(message)+'\n') 
         OutShell.see(END)
-        message = "_SEND_CAN_MESSAGE_" + message #add pefix so sever knows what sort of data it is
+        message = "_SEND_CAN_MESSAGE_" + str(message) #add pefix so sever knows what sort of data it is
         q.put(message)
         
         return 1
@@ -252,6 +274,27 @@ def SendStopMessage(qout, enab_but, disab_but):
         toggle(disab_but)
         return 1
 
+def CanMonitor(variable, command, qout, enab_but, disab_but):
+         # clears the que before it is used
+        while qout.empty() == False:            
+                qout.get()
+                qout.task_done()
+        #start thread
+        MON = threading.Thread(target = lambda: can_monitor(qout))
+        MON.daemon = True
+        MON.start()
+
+        message = command
+        qout.put(message)
+        # request data from server
+        q.put(message)
+
+        # toggle buttons
+        toggle(enab_but)
+        toggle(disab_but)
+        
+        return 1
+        
 def toggle(but): # toggles buttons states
         # checks if disabled
         if but.config('state')[-1] == 'disabled':
@@ -317,8 +360,8 @@ def Buttons(): # creates buttons
         but12=Button(Inputs, text='Stop Monitoring All CAN Activity',  width=30, state='disabled')  
         but12.grid(row=6,column=1)
         
-        but11.config( command= lambda: SendCommands("_MONITOR_CAN_BUS_", but11, but12))
-        but12.config( command= lambda: SendCommands("_STOP_MONITOR_CAN_BUS_", but11, but12))
+        but11.config( command= lambda: CanMonitor('Can Message', "_MONITOR_CAN_BUS_",q8, but11, but12))
+        but12.config( command= lambda: SendStopMessage(q8, but11, but12))
 
         #Live Plot Temperature
         but13=Button(Inputs, text='Live Plot Temperature',  width=30, state='normal')  
