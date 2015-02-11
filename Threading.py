@@ -7,7 +7,7 @@ import SQL_interface
 
 def threadFunc(conn, addr,filename):
     while 1:
-        connect = connect(username,password,database)
+        connect = connect(SQL_interface.username,SQL_interface.password,SQL_interface.database)
         cursor = cursor(connect)
         try: #getting message
             message1 = conn.recv(2048)
@@ -92,14 +92,14 @@ def threadFunc(conn, addr,filename):
         elif "_MONITOR_CAN_BUS_" == message1:
             # get live can bus activity and send to client
             # probs create a thread to wait for activity and send to the client
-            message1 = "Displaying Live CAN Activity"
+            #message1 = "Displaying Live CAN Activity"
             #last_message_time="2015-02-04 16:20:26.558000"
             last_message_time = "401"
             #a_long_time="2020-02-04 16:20:26.558000"
             a_long_time="420"
             latest_message = SQL_interface.query(cursor,connect,"Node ID",last_message_time,a_long_time)
             for (Time, Node_ID, Data) in latest_message:
-                message1 = "_COM_CAN_MON_"+"{}, {} {}".format(Time, Node_ID, Data)
+                message1 = "MONITOR_CAN_BUS"+"{}, {} {}".format(Time, Node_ID, Data)
                 msg1 = (str(message1)).encode("utf-8")
 
 

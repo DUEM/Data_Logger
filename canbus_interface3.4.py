@@ -12,11 +12,11 @@ def cursor(connect):
     cursor = connect.cursor()
     return cursor
 def add_message(node_id,data,cursor,connect):
-    time1 = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+    time1 = datetime.datetime.now()
     print(time1)
     ###################################### Creating the Argument #######################
     add_message = "INSERT INTO can ( `Time`, `Node ID`, `Data` )VALUES ('"
-    add_message += time1
+    add_message += str(time1)
     add_message += "','"
     add_message += node_id
     add_message += "','"
