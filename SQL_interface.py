@@ -33,16 +33,3 @@ database = str(input("Enter Database: "))
 password = str(input("Enter Password: "))
 connect = connect(username,password,database)
 cursor = cursor(connect)
-while 1==1:
-    print("1) Adding Data to Table")
-    print("2) Query Table")
-    choice = str(input("Choose Option: "))
-    if choice == str(1):
-        node_id = str(input("Enter Node ID: "))
-        data = str(input("Enter Data: "))
-        add_message(node_id,data,cursor,connect)
-
-    if choice == str(2):
-        cursor = query(cursor,connect)
-        for (item) in cursor:
-            print(item) # v.basic printing needs improving!!!
