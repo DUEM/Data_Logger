@@ -164,6 +164,7 @@ def check_input(file,ser=0):
         for x in joined:
             a +=x
         try:
+            print("t"+a+"\r")
             ser.write(b"t"+bytes(a,'utf-8')+b"\r")
             x=ser.read(2)
             while x != b"z\r":
