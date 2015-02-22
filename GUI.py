@@ -34,50 +34,51 @@ def comunication():
         host = "10.245.124.17"
         port = 51432
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        try:
-            sock.connect((host,port)) # sock.connec_ex((host,port)) !!!
-        except:
-            print("Something is wrong with connecting to the server at %d." % (port))
-            sock.close()
-            t = False
-
-        while t:
-            try:
-                message1 = q.get()#str(input("Input: "))
-                if message1.lower() == "_exit_":
-                        t = False
-                sock.sendall(message1.encode("utf-8"))
-                q.task_done()
-            except:
-                print("Failed to send the message")
-
-            try:
-                msg1 = sock.recv(2048)
-                if len(msg1):
-                        msg2 = msg1.decode("utf-8")
-                        print(msg2)
+        while 1:
+        	
+        	try:
+            		sock.connect((host,port)) # sock.connec_ex((host,port)) !!!
+        	except:
+            		print("Something is wrong with connecting to the server at %d." % (port))
+            		sock.close()
+            		t = False
+	
+        	while t:
+            		try:
+                		message1 = q.get()#str(input("Input: "))
+                		if message1.lower() == "_exit_":
+                        		t = False
+                		sock.sendall(message1.encode("utf-8"))
+                		q.task_done()
+            		except:
+                		print("Failed to send the message")
+            		try:
+                		msg1 = sock.recv(2048)
+                		if len(msg1):
+                        		msg2 = msg1.decode("utf-8")
+                        		print(msg2)
                         #OutShell.insert(END,msg2+'\n')
                         #OutShell.see(END)
-                        if "_COM_LIVE_PLOT_BAT_" in msg2:
-                            q2.put(msg2)
-                        elif  "_COM_SAVE_BAT_" in msg2:
-                                q3.put(msg2)
-                        elif "_COM_LIVE_PLOT_SPEED_" in msg2:
-                                q4.put(msg2)
-                        elif "_COM_SAVE_SPEED_" in msg2:
-                                q5.put(msg2)
-                        elif "_COM_LIVE_PLOT_TEMP_" in msg2:
-                                q6.put(msg2)
-                        elif "_COM_SAVE_TEMP_" in msg2:
-                                q7.put(msg2)
-                        elif "_MONITOR_CAN_BUS_" in msg2:
-                                q8.put(msg2)
-                        else:
-                                OutShell.insert(END,'\n'+'>'*80+'\n'+msg2+'\n'+'<'*80+'\n\n')
-                                OutShell.see(END)
-            except:
-                print("Failed to recieve the message")
-        sock.close()
+                        	if "_COM_LIVE_PLOT_BAT_" in msg2:
+                            		q2.put(msg2)
+                        	elif  "_COM_SAVE_BAT_" in msg2:
+                                	q3.put(msg2)
+                        	elif "_COM_LIVE_PLOT_SPEED_" in msg2:
+                                	q4.put(msg2)
+                        	elif "_COM_SAVE_SPEED_" in msg2:
+                                	q5.put(msg2)
+                        	elif "_COM_LIVE_PLOT_TEMP_" in msg2:
+                                	q6.put(msg2)
+                        	elif "_COM_SAVE_TEMP_" in msg2:
+                                	q7.put(msg2)
+                        	elif "_MONITOR_CAN_BUS_" in msg2:
+                                	q8.put(msg2)
+                        	else:
+                                	OutShell.insert(END,'\n'+'>'*80+'\n'+msg2+'\n'+'<'*80+'\n\n')
+                                	OutShell.see(END)
+            		except:
+                		print("Failed to recieve the message")
+        	sock.close()
 
 comm = threading.Thread(target = comunication) #seperate thread for the communicating with the server
 comm.daemon = True
