@@ -28,14 +28,16 @@ q8 = Queue()    # monitor can messages
 q8.join()
 
 ###################### Sending/Recieving data bit ###########################
-def comunication():
+def comunication(host = "10.245.124.17",port = 51432):
         ## CLIENT
-        t = True
-        host = "10.245.124.17"
-        port = 51432
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
+        # host = input()
+        # port = input() ?
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # can be inside of a while loop
+        #sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        # ^ reconnects using same ip ^
         while 1:
-        	
+        	t = True
         	try:
             		sock.connect((host,port)) # sock.connec_ex((host,port)) !!!
         	except:
@@ -52,14 +54,22 @@ def comunication():
                 		q.task_done()
             		except:
                 		print("Failed to send the message")
-            		try:
-                		msg1 = sock.recv(2048)
-                		if len(msg1):
-                        		msg2 = msg1.decode("utf-8")
-                        		print(msg2)
-                        #OutShell.insert(END,msg2+'\n')
-                        #OutShell.see(END)
-                        	if "_COM_LIVE_PLOT_BAT_" in msg2:
+                		t = False
+                		msg2 = ""
+                	if t == True:
+            			try:
+                			msg1 = sock.recv(2048)
+                			if len(msg1):
+                        			msg2 = msg1.decode("utf-8")
+                        			print(msg2)
+                        	#OutShell.insert(END,msg2+'\n')
+                        	#OutShell.see(END)
+                        	
+            			except:
+                			print("Failed to recieve the message")
+                			t = False
+                	if t == True:
+                		if "_COM_LIVE_PLOT_BAT_" in msg2:
                             		q2.put(msg2)
                         	elif  "_COM_SAVE_BAT_" in msg2:
                                 	q3.put(msg2)
@@ -76,8 +86,6 @@ def comunication():
                         	else:
                                 	OutShell.insert(END,'\n'+'>'*80+'\n'+msg2+'\n'+'<'*80+'\n\n')
                                 	OutShell.see(END)
-            		except:
-                		print("Failed to recieve the message")
         	sock.close()
 
 comm = threading.Thread(target = comunication) #seperate thread for the communicating with the server
