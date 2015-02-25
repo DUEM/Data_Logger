@@ -129,32 +129,6 @@ def check_input(file,ser=0):
     print("Message to send:")
     if input == "":
         print("No message sent")
-    elif input=="CLOSEBUS":
-        print(input)
-        close_canusb(ser)
-        file.seek(file.tell()+2)
-    elif input=="OPENCBUS":
-        print(input)
-        open_canbus(ser)
-        file.seek(file.tell()+2)
-    elif input=="CLOSESER":
-        close_serial(ser)
-        file.seek(file.tell()+2)
-    elif input =="OPENSERL":
-        file.seek(file.tell()+2)
-        ser = open_ports(file)
-        file.seek(file.tell()+2)
-    elif input == "EXITPROG":
-        if CANOPEN == 2:
-            print("Program exited")
-            sys.exit()
-        else:
-            close_canusb(ser)
-            file.seek(file.tell()+2)
-            close_serial(ser)
-            file.seek(file.tell()+2)
-            print("Program exited")
-            sys.exit()
     else:
         input_array=list(input)
         message_bytes=file.read(2*int(input_array[3]))
@@ -175,7 +149,6 @@ def check_input(file,ser=0):
             print("Message Sent")
         except serial.SerialException:
             print("CANBUS disconnected")
-
     return ser
 
 #Start of program
