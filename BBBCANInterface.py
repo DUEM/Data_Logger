@@ -47,7 +47,7 @@ def dissect_can_frame(frame):
     can_id, can_dlc, data = struct.unpack(can_frame_fmt, frame)
     return (can_id, can_dlc, data[:can_dlc])
 
-def check_input(file,ser=0):
+def check_input(file):
     input = file.read(4)
     if input == "":
         print("No input")
@@ -81,3 +81,4 @@ while 1:
     can_id, can_dlc, data = dissect_can_frame(cf)
     print('Received: can_id=%x, can_dlc=%x, data=%s' % can_id, can_dlc, data)
     add_message(can_id,data,cursor,connect)
+    check_input(file)
