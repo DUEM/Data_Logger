@@ -1,11 +1,11 @@
 import socket
 import struct
-import serial
+#import serial
 import sys
-import mysql.connector as sql
+#import mysql.connector as sql
 import datetime
 import random
-
+"""
 #################################### SQL FUNCTIONS WE WILL NEED #########################################################
 def connect(username,password,database):
     connect = sql.connect( user = username,password=password, database = database) # connected to database
@@ -34,7 +34,7 @@ def query(cursor,connect):
     cursor.execute(arg)
     return cursor
 #########################################################################################################################
-
+"""
 can_frame_fmt = "=IB3x8s"
 can_frame_size = struct.calcsize(can_frame_fmt)
 
@@ -80,5 +80,5 @@ while 1:
     cf, addr = s.recvfrom(can_frame_size)
     can_id, can_dlc, data = dissect_can_frame(cf)
     print('Received: can_id=%x, can_dlc=%x, data=%s' % can_id, can_dlc, data)
-    add_message(can_id,data,cursor,connect)
+    #add_message(can_id,data,cursor,connect)
     check_input(file)
