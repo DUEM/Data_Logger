@@ -64,7 +64,7 @@ def check_input(file):
             print('Error sending CAN frame')
             
             
-s = socket.socket(AF_CAN, SOCK_RAW, CAN_RAW)
+s = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
 s.bind(('can0',))
 username="ed"
 database="test"
