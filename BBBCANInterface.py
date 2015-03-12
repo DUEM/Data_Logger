@@ -69,8 +69,8 @@ s.bind(('can0',))
 username="ed"
 database="test"
 password="runrun93"
-connect = connect(username,password,database)
-cursor = cursor(connect)
+#connect = connect(username,password,database)
+#cursor = cursor(connect)
 sync = open("CAN_TimeSync.canusb","r")
 line = sync.readline()
 print(line)
