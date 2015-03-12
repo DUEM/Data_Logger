@@ -82,5 +82,5 @@ while 1:
     print('Received: can_id=%x '% can_id)
     print('Received: can_dlc=%x' % can_dlc)
     print('Received: data=%s' % data)
-    print('Received: can_id=%x, can_dlc=%x, data=%s' % can_id, can_dlc, data)
+    print('Received: can_id=%x, can_dlc=%x, data=%s' % dissect_can_frame(cf))
     #add_message(can_id,data,cursor,connect)
