@@ -74,11 +74,10 @@ password="runrun93"
 #sync = open("CAN_TimeSync.canusb","r")
 #line = sync.readline()
 #print(line)
-file = open(line,"r")
+#file = open(line,"r")
 while 1:
-    check_input(file)
+    #check_input(file)
     cf, addr = s.recvfrom(can_frame_size)
     can_id, can_dlc, data = dissect_can_frame(cf)
     print('Received: can_id=%x, can_dlc=%x, data=%s' % can_id, can_dlc, data)
     #add_message(can_id,data,cursor,connect)
-    check_input(file)
