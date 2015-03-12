@@ -71,9 +71,9 @@ database="test"
 password="runrun93"
 #connect = connect(username,password,database)
 #cursor = cursor(connect)
-sync = open("CAN_TimeSync.canusb","r")
-line = sync.readline()
-print(line)
+#sync = open("CAN_TimeSync.canusb","r")
+#line = sync.readline()
+#print(line)
 file = open(line,"r")
 while 1:
     check_input(file)
