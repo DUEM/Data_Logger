@@ -79,5 +79,8 @@ while 1:
     #check_input(file)
     cf, addr = s.recvfrom(can_frame_size)
     can_id, can_dlc, data = dissect_can_frame(cf)
+    print('Received: can_id=%x '% can_id)
+    print('Received: can_dlc=%x' % can_dlc)
+    print('Received: data=%s' % data)
     print('Received: can_id=%x, can_dlc=%x, data=%s' % can_id, can_dlc, data)
     #add_message(can_id,data,cursor,connect)
