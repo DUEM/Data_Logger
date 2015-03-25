@@ -257,7 +257,6 @@ def recieveCanMessage(can_frame_size, can_frame_fmt, s): #Function which gets th
 def SendCanMessage(can_frame_fmt, can_id, can_dlc):
 	while 1:
 		message = q2.get() #Gets CAN message from the queue 
-		
 		can_dlc = len(message) # Think these are the send commands?
 		message = message.ljust(8, b'\x00')
 		struct.pack(can_frame_fmt, can_id, can_dlc, message)
