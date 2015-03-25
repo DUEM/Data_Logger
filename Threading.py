@@ -236,11 +236,11 @@ def CanInt(): # Initialises all the CAN stuff
 		CANListen = threading.Thread(target = lambda: recieveCanMessage(can_frame_size, can_frame_fmt, s))
     
 	while q2.empty() == False:            
-	        q2.get()
-	        q2.task_done()
+		q2.get()
+		q2.task_done()
 		#starting CAN send thread
 		CANTalk = threading.Thread(target = lambda: SendCanMessage(can_frame_fmt, can_id, can_dlc))
-	    	#example of how you communicate with the send thread
+		#example of how you communicate with the send thread
 		message = 'test'
 		q2.put(message)
 	
