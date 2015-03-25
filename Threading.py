@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import socket, sys, threading #, socketserver
+import socket, sys, threading, struct #, socketserver
 import random
 import datetime
 #import SQL_interface
