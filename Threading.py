@@ -232,7 +232,7 @@ def CanInt(): # Initialises all the CAN stuff
 	# clears the que before it is used
 	while q1.empty() == False:            
 		q1.get()
-	        q1.task_done()
+		q1.task_done()
 		CANListen = threading.Thread(target = lambda: recieveCanMessage(can_frame_size, can_frame_fmt, s))
     
 	while q2.empty() == False:            
