@@ -3,7 +3,14 @@ import socket, sys, threading #, socketserver
 import random
 import datetime
 import SQL_interface
+from queue import Queue
 ## SERVER
+
+q1 = Queue() # talk to recieve CAN thread
+q1.join()
+
+q2 = Queue() #Talk to Send CAN thread
+q2.join()
 
 def threadFunc(conn, addr,filename):
     while 1:
@@ -178,18 +185,6 @@ def get_info(db):
             info += "\n"
     return info
 
-def film_info():
-    db1 = get_movie_db()
-    info = ""
-    info += "Not yet implemented" #
-    info += "\n"
-    return info
-    
-def get_movie_db():
-    db = []
-    return db
-
-
 def main():
 
     global db_clients_INFO
@@ -214,8 +209,10 @@ def main():
     file.close()
     log=open(filename,"w")
     log.close()
-
-    while 1:
+	
+	CanInt() # Start CAN Stuff
+    
+	while 1:
         conn, addr = s.accept()
         c = con_info(addr)
         if c[0][4][0] not in db_clients_IP:
@@ -226,7 +223,49 @@ def main():
         t.start()
     s.close()
 
-
+#################################################################
+###################### CAN STUFF ################################
+#################################################################
+def CanInt(): # Initialises all the CAN stuff
+	can_frame_fmt = "=IB3x8s"
+	can_frame_size = struct.calcsize(can_frame_fmt)
+	s = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
+	s.bind(('can0',))
+	# clears the que before it is used
+    while q1.empty() == False:            
+        q1.get()
+        q1.task_done()
+	CANListen = threading.Thread(target = lambda: recieveCanMessage(can_frame_size, can_frame_fmt, s))
+    
+	while q2.empty() == False:            
+        q2.get()
+        q2.task_done()
+	#starting CAN send thread
+	CANTalk = threading.Thread(target = lambda: SendCanMessage(can_frame_fmt, can_id, can_dlc))
+    #example of how you communicate with the send thread
+	message = 'test'
+	q2.put(message)
+	
+def recieveCanMessage(can_frame_size, can_frame_fmt, s): #Function which gets the CAN message
+	while 1: #infinite loop which just gets CAN messages. Put the SQL connection here.
+		cf, addr = s.recvfrom(can_frame_size) 
+		can_id, can_dlc, data = struct.unpack(can_frame_fmt, frame)
+		print('Received: can_id=%x '% can_id)
+		print('Received: can_dlc=%x' % can_dlc)
+		print('Received: data=%s' % data)
+		print('Received: can_id=%x, can_dlc=%x, data=%s' % struct.unpack(can_frame_fmt, frame)) #not sure whether this line will work or cause it to crash
+	return (can_id, can_dlc, data[:can_dlc])
+	
+def SendCanMessage(can_frame_fmt, can_id, can_dlc):
+	while 1:
+		message = q2.get() #Gets CAN message from the queue 
+		
+		can_dlc = len(message) # Think these are the send commands?
+		message = message.ljust(8, b'\x00')
+		struct.pack(can_frame_fmt, can_id, can_dlc, message)
+		
+		q2.task_done() #Marks the message as sent so it can move on to the next
+		
 db_clients_INFO = []
 db_clients_IP = []
 main()

@@ -10,7 +10,7 @@ import time,sys,os
 from datetime import datetime
 
 # allows communication between threads
-q = Queue()	 # talk to communication thread
+q = Queue()      # talk to communication thread
 q.join()
 q2 = Queue()    # talk to live plot battery thread
 q2.join()
@@ -28,65 +28,62 @@ q8 = Queue()    # monitor can messages
 q8.join()
 
 ###################### Sending/Recieving data bit ###########################
-def comunication(host = "10.245.124.17",port = 51432):
+def comunication(host = "10.245.124.52",port = 51432):
         ## CLIENT
-        
         # host = input()
         # port = input() ?
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # can be inside of a while loop
         #sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         # ^ reconnects using same ip ^
         while 1:
-        	t = True
-        	try:
-            		sock.connect((host,port)) # sock.connec_ex((host,port)) !!!
-        	except:
-            		print("Something is wrong with connecting to the server at %d." % (port))
-            		sock.close()
-            		t = False
-	
-        	while t:
-            		try:
-                		message1 = q.get()#str(input("Input: "))
-                		if message1.lower() == "_exit_":
-                        		t = False
-                		sock.sendall(message1.encode("utf-8"))
-                		q.task_done()
-            		except:
-                		print("Failed to send the message")
-                		t = False
-                		msg2 = ""
-                	if t == True:
-            			try:
-                			msg1 = sock.recv(2048)
-                			if len(msg1):
-                        			msg2 = msg1.decode("utf-8")
-                        			print(msg2)
-                        	#OutShell.insert(END,msg2+'\n')
-                        	#OutShell.see(END)
-                        	
-            			except:
-                			print("Failed to recieve the message")
-                			t = False
-                	if t == True:
-                		if "_COM_LIVE_PLOT_BAT_" in msg2:
-                            		q2.put(msg2)
-                        	elif  "_COM_SAVE_BAT_" in msg2:
-                                	q3.put(msg2)
-                        	elif "_COM_LIVE_PLOT_SPEED_" in msg2:
-                                	q4.put(msg2)
-                        	elif "_COM_SAVE_SPEED_" in msg2:
-                                	q5.put(msg2)
-                        	elif "_COM_LIVE_PLOT_TEMP_" in msg2:
-                                	q6.put(msg2)
-                        	elif "_COM_SAVE_TEMP_" in msg2:
-                                	q7.put(msg2)
-                        	elif "_MONITOR_CAN_BUS_" in msg2:
-                                	q8.put(msg2)
-                        	else:
-                                	OutShell.insert(END,'\n'+'>'*80+'\n'+msg2+'\n'+'<'*80+'\n\n')
-                                	OutShell.see(END)
-        	sock.close()
+                t = True
+                try:
+                        sock.connect((host,port)) # sock.connec_ex((host,port)) !!!
+                except:
+                        print("Something is wrong with connecting to the server at %d." % (port))
+                        sock.close()
+                        t = False
+                while t:
+                        try:
+                                message1 = q.get()#str(input("Input: "))
+                                if message1.lower() == "_exit_":
+                                        t = False
+                                sock.sendall(message1.encode("utf-8"))
+                                q.task_done()
+                        except:
+                                print("Failed to send the message")
+                                t = False
+                                msg2 = ""
+                        if t == True:
+                                try:
+                                        msg1 = sock.recv(2048)
+                                        if len(msg1):
+                                                msg2 = msg1.decode("utf-8")
+                                                print(msg2)
+                                        #OutShell.insert(END,msg2+'\n')
+                                        #OutShell.see(END)
+                                except:
+                                        print("Failed to recieve the message")
+                                        t = False
+                        if t == True:
+                                if "_COM_LIVE_PLOT_BAT_" in msg2:
+                                        q2.put(msg2)
+                                elif  "_COM_SAVE_BAT_" in msg2:
+                                        q3.put(msg2)
+                                elif "_COM_LIVE_PLOT_SPEED_" in msg2:
+                                        q4.put(msg2)
+                                elif "_COM_SAVE_SPEED_" in msg2:
+                                        q5.put(msg2)
+                                elif "_COM_LIVE_PLOT_TEMP_" in msg2:
+                                        q6.put(msg2)
+                                elif "_COM_SAVE_TEMP_" in msg2:
+                                        q7.put(msg2)
+                                elif "_MONITOR_CAN_BUS_" in msg2:
+                                        q8.put(msg2)
+                                else:
+                                        OutShell.insert(END,'\n'+'>'*80+'\n'+msg2+'\n'+'<'*80+'\n\n')
+                                        OutShell.see(END)
+                sock.close()
 
 comm = threading.Thread(target = comunication) #seperate thread for the communicating with the server
 comm.daemon = True
@@ -148,7 +145,7 @@ def bat_plot(Qout):
                         break
                 Qout.task_done()
                 q.put(message)
-				
+                                
 
 #########################################################################################################################
 ################################ CSV STUFF ###############################
@@ -403,7 +400,7 @@ Inputs.grid(row=0)
 
 inpType = 0
 
-################ TEXT FIELDS ###################	
+################ TEXT FIELDS ###################        
 #HAVE TO BE GLOBAL :(
 CanInput = Entry(Inputs, width=30)
 CanInput.grid(row = 0, column = 0)
