@@ -209,10 +209,8 @@ def main():
     file.close()
     log=open(filename,"w")
     log.close()
-	
-	CanInt() # Start CAN Stuff
-    
-	while 1:
+    CanInt() # Start CAN Stuff
+    while 1:
         conn, addr = s.accept()
         c = con_info(addr)
         if c[0][4][0] not in db_clients_IP:
