@@ -2,7 +2,7 @@
 import socket, sys, threading #, socketserver
 import random
 import datetime
-import SQL_interface
+#import SQL_interface
 from queue import Queue
 ## SERVER
 
@@ -14,8 +14,8 @@ q2.join()
 
 def threadFunc(conn, addr,filename):
     while 1:
-        connect = SQL_interface.connect(SQL_interface.username,SQL_interface.password,SQL_interface.database)
-        cursor = SQL_interface.cursor(connect)
+        #connect = SQL_interface.connect(SQL_interface.username,SQL_interface.password,SQL_interface.database)
+        #cursor = SQL_interface.cursor(connect)
         try: #getting message
             message1 = conn.recv(2048)
             if not len(message1):
