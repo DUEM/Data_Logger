@@ -210,7 +210,7 @@ def main():
     log=open(filename,"w")
     log.close()
     CanInt() # Start CAN Stuff
-    print("this happened)
+    print("this happened")
     while 1:
         conn, addr = s.accept()
         c = con_info(addr)
