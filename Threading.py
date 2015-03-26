@@ -210,7 +210,6 @@ def main():
     log=open(filename,"w")
     log.close()
     CanInt() # Start CAN Stuff
-    print("this happened")
     while 1:
         conn, addr = s.accept()
         c = con_info(addr)
@@ -247,6 +246,7 @@ def CanInt(): # Initialises all the CAN stuff
 	
 def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which gets the CAN message
 	while 1: #infinite loop which just gets CAN messages. Put the SQL connection here.
+		print("this loop happened")
 		cf, addr = cansock.recvfrom(can_frame_size) 
 		can_id, can_dlc, data = struct.unpack(can_frame_fmt, frame)
 		print('Received: can_id=%x '% can_id)
