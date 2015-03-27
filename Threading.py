@@ -233,17 +233,19 @@ def CanInt(): # Initialises all the CAN stuff
 	while q1.empty() == False:            
 		q1.get()
 		q1.task_done()
-		CANListen = threading.Thread(target = lambda: recieveCanMessage(can_frame_size, can_frame_fmt, cansock))
+	
+	CANListen = threading.Thread(target = lambda: recieveCanMessage(can_frame_size, can_frame_fmt, cansock))
 
     
 	while q2.empty() == False:            
 		q2.get()
 		q2.task_done()
 		#starting CAN send thread
-		CANTalk = threading.Thread(target = lambda: SendCanMessage(can_frame_fmt, can_id, can_dlc))
-		#example of how you communicate with the send thread
-		message = 'test'
-		q2.put(message)
+	
+	CANTalk = threading.Thread(target = lambda: SendCanMessage(can_frame_fmt, can_id, can_dlc))
+	#example of how you communicate with the send thread
+	message = 'test'
+	q2.put(message)
 	
 def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which gets the CAN message
 	while 1: #infinite loop which just gets CAN messages. Put the SQL connection here.
