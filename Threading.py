@@ -267,4 +267,5 @@ def SendCanMessage(can_frame_fmt, can_id, can_dlc):
 		
 db_clients_INFO = []
 db_clients_IP = []
+CanInt() # Start CAN Stuff
 main()
