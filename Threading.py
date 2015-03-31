@@ -244,8 +244,8 @@ def CanInt(): # Initialises all the CAN stuff
 	
 	#CANTalk = threading.Thread(target = lambda: SendCanMessage(can_frame_fmt, can_id, can_dlc))
 	#example of how you communicate with the send thread
-	CANTalk.daemon = True
-	CANTalk.start()
+	#CANTalk.daemon = True
+	#CANTalk.start()
 	message = 'test'
 	q2.put(message)
 	
