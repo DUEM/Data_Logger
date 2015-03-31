@@ -230,9 +230,9 @@ def CanInt(): # Initialises all the CAN stuff
 	cansock = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
 	cansock.bind(('can0',))
 	# clears the que before it is used
-	while q1.empty() == False:            
-		q1.get()
-		q1.task_done()
+	#while q1.empty() == False:            
+		#q1.get()
+		#q1.task_done()
 	
 	CANListen = threading.Thread(target = lambda: recieveCanMessage(can_frame_size, can_frame_fmt, cansock))
 	CANListen.daemon = True
