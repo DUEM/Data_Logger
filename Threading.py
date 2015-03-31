@@ -236,8 +236,7 @@ def CanInt(): # Initialises all the CAN stuff
 	
 	CANListen = threading.Thread(target = lambda: recieveCanMessage(can_frame_size, can_frame_fmt, cansock))
 	CANListen.daemon = True
-        CANListen.start()
-    
+	CANListen.start()
 	while q2.empty() == False:            
 		q2.get()
 		q2.task_done()
