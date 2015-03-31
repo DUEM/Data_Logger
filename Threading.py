@@ -242,7 +242,7 @@ def CanInt(): # Initialises all the CAN stuff
 		q2.task_done()
 		#starting CAN send thread
 	
-	CANTalk = threading.Thread(target = lambda: SendCanMessage(can_frame_fmt, can_id, can_dlc))
+	#CANTalk = threading.Thread(target = lambda: SendCanMessage(can_frame_fmt, can_id, can_dlc))
 	#example of how you communicate with the send thread
 	CANTalk.daemon = True
 	CANTalk.start()
@@ -253,11 +253,11 @@ def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which g
 	while 1: #infinite loop which just gets CAN messages. Put the SQL connection here.
 		print("this loop happened")
 		cf, addr = cansock.recvfrom(can_frame_size) 
-		can_id, can_dlc, data = struct.unpack(can_frame_fmt, frame)
+		can_id, can_dlc, data = struct.unpack(can_frame_fmt, cf)
 		print('Received: can_id=%x '% can_id)
 		print('Received: can_dlc=%x' % can_dlc)
 		print('Received: data=%s' % data)
-		print('Received: can_id=%x, can_dlc=%x, data=%s' % struct.unpack(can_frame_fmt, frame)) #not sure whether this line will work or cause it to crash
+		print('Received: can_id=%x, can_dlc=%x, data=%s' % struct.unpack(can_frame_fmt, cf)) #not sure whether this line will work or cause it to crash
 		q1.task_done()
 	return (can_id, can_dlc, data[:can_dlc])
 	
