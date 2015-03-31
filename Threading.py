@@ -232,7 +232,7 @@ def CanInt(): # Initialises all the CAN stuff
 	# clears the que before it is used
 	while q1.empty() == False:            
 		q1.get()
-		#q1.task_done()
+		q1.task_done()
 	
 	CANListen = threading.Thread(target = lambda: recieveCanMessage(can_frame_size, can_frame_fmt, cansock))
 	CANListen.daemon = True
@@ -271,5 +271,5 @@ def SendCanMessage(can_frame_fmt, can_id, can_dlc):
 		
 db_clients_INFO = []
 db_clients_IP = []
-CanInt() # Start CAN Stuff
+#CanInt() # Start CAN Stuff
 main()
