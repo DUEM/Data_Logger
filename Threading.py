@@ -84,7 +84,7 @@ def threadFunc(conn, addr):
             #file.close()
             message1 = message1.replace("_SEND_CAN_MESSAGE_","")
             print("sending Can Message: " + message1)
-            #msg1 = (str(message1)).encode("utf-8")
+            
             
             print(message1)
             q2.put(message1)
@@ -248,9 +248,8 @@ def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which g
 def SendCanMessage(can_frame_fmt, can_id):
 	while 1:
 		message = q2.get() #Gets CAN message from the queue 
-		can_dlc = len(message) # Think these are the send commands?
-		message = message.ljust(8, b'\x00')
-		can_dlc = 8
+		can_dlc = len(message)/2 # Think these are the send commands?
+		msg1 = (str(message)).encode("utf-8")
 		canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, message)
 		cansock.send(canmessage)
 		q2.task_done() #Marks the message as sent so it can move on to the next
