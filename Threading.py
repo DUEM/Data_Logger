@@ -86,8 +86,8 @@ def threadFunc(conn, addr):
             print("sending Can Message: " + message1)
             #msg1 = (str(message1)).encode("utf-8")
             
-            print(msg1)
-            q2.put(msg1)
+            print(message1)
+            q2.put(message1)
             ##################################### 
         elif "_SET_MESSAGE_FREQUENCY_" in message1:
             # checks if want to change the rate a messages are sent at 
