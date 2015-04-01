@@ -196,19 +196,6 @@ def main():
     s.bind((host,port))
     s.listen(5)
     print("Starting server")
-
-    time = datetime.datetime.now()
-    filename = "CANUSB_Input"+str(time)
-    filename =filename.replace(" ","-")
-    filename =filename.replace(":","-")
-    filename =filename.replace(".","-")
-    filename = filename +".canusb"
-    print(filename)
-    file=open("CAN_TimeSync.canusb","w")
-    file.write(filename)
-    file.close()
-    log=open(filename,"w")
-    log.close()
     CanInt() # Start CAN Stuff
     while 1:
         conn, addr = s.accept()
@@ -230,9 +217,7 @@ def CanInt(): # Initialises all the CAN stuff
 	cansock = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
 	cansock.bind(('can0',))
 	# clears the que before it is used
-	#while q1.empty() == False:            
-		#q1.get()
-		#q1.task_done()
+
 	
 	CANListen = threading.Thread(target = lambda: recieveCanMessage(can_frame_size, can_frame_fmt, cansock))
 	CANListen.daemon = True
@@ -251,14 +236,12 @@ def CanInt(): # Initialises all the CAN stuff
 	
 def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which gets the CAN message
 	while 1: #infinite loop which just gets CAN messages. Put the SQL connection here.
-		print("this loop happened")
 		cf, addr = cansock.recvfrom(can_frame_size) 
 		can_id, can_dlc, data = struct.unpack(can_frame_fmt, cf)
 		print('Received: can_id=%x '% can_id)
 		print('Received: can_dlc=%x' % can_dlc)
 		print('Received: data=%s' % data)
-		print('Received: can_id=%x, can_dlc=%x, data=%s' % struct.unpack(can_frame_fmt, cf)) #not sure whether this line will work or cause it to crash
-		#q1.task_done()
+		print('Received: can_id=%x, can_dlc=%x, data=%s' % struct.unpack(can_frame_fmt, cf)) 
 	return (can_id, can_dlc, data[:can_dlc])
 	
 def SendCanMessage(can_frame_fmt, can_id, can_dlc):
@@ -266,10 +249,10 @@ def SendCanMessage(can_frame_fmt, can_id, can_dlc):
 		message = q2.get() #Gets CAN message from the queue 
 		can_dlc = len(message) # Think these are the send commands?
 		message = message.ljust(8, b'\x00')
-		struct.pack(can_frame_fmt, can_id, can_dlc, message)
+		canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, message)
+		cansock.send(canmessage)
 		q2.task_done() #Marks the message as sent so it can move on to the next
 		
 db_clients_INFO = []
 db_clients_IP = []
-#CanInt() # Start CAN Stuff
 main()
