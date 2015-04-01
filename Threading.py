@@ -248,8 +248,8 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 	while 1:
 		message = q2.get() #Gets CAN message from the queue 
 		can_dlc = len(message)/2
-		print("can dlc is")
-		print(can_dlc)
+		can_dlc = int(can_dlc)
+		
 		message = bytes.fromhex(message)# Think these are the send commands?
 		#message = message.ljust(8, b'\x00')
 		#msg1 = (str(message)).encode("utf-8")
