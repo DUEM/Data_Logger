@@ -12,7 +12,7 @@ q1.join()
 q2 = Queue() #Talk to Send CAN thread
 q2.join()
 
-def threadFunc(conn, addr,filename):
+def threadFunc(conn, addr):
     while 1:
         #connect = SQL_interface.connect(SQL_interface.username,SQL_interface.password,SQL_interface.database)
         #cursor = SQL_interface.cursor(connect)
@@ -204,7 +204,7 @@ def main():
         if c[0][4][0] not in db_clients_IP:
             db_clients_IP.append(c[0][4][0])
             db_clients_INFO.append(c)
-        t = threading.Thread(target = threadFunc, args = (conn, addr,filename))
+        t = threading.Thread(target = threadFunc, args = (conn, addr))
         print("Connected with: " + addr[0] + ":" + str(addr[1]))
         t.start()
     s.close()
