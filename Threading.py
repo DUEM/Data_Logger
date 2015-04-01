@@ -229,7 +229,7 @@ def CanInt(): # Initialises all the CAN stuff
 		q2.task_done()
 		#starting CAN send thread
 	
-	CANTalk = threading.Thread(target = lambda: SendCanMessage(can_frame_fmt, 0x400))
+	CANTalk = threading.Thread(target = lambda: SendCanMessage(can_frame_fmt, 0x400,cansock))
 	#example of how you communicate with the send thread
 	CANTalk.daemon = True
 	CANTalk.start()
@@ -245,7 +245,7 @@ def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which g
 		print('Received: can_id=%x, can_dlc=%x, data=%s' % struct.unpack(can_frame_fmt, cf)) 
 	return (can_id, can_dlc, data[:can_dlc])
 	
-def SendCanMessage(can_frame_fmt, can_id):
+def SendCanMessage(can_frame_fmt, can_id,cansock):
 	while 1:
 		message = q2.get() #Gets CAN message from the queue 
 		can_dlc = len(message)
