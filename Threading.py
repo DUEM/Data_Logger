@@ -247,7 +247,7 @@ def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which g
 def SendCanMessage(can_frame_fmt, can_id,cansock):
 	while 1:
 		message = q2.get() #Gets CAN message from the queue 
-		can_dlc = len(message)
+		can_dlc = len(message)/2
 		print("can dlc is")
 		print(can_dlc)
 		message = bytes.fromhex(message)# Think these are the send commands?
