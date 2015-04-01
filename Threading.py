@@ -82,9 +82,10 @@ def threadFunc(conn, addr):
             #file = open(filename,"a") #file path will need changing
             #file.write(message1.replace("_SEND_CAN_MESSAGE_","")+"\r\r")
             #file.close()
-            #message1 = message1.replace("_SEND_CAN_MESSAGE_","")
-            #print("sending Can Message: " + message1)
+            message1 = message1.replace("_SEND_CAN_MESSAGE_","")
+            print("sending Can Message: " + message1)
             #msg1 = (str(message1)).encode("utf-8")
+            
             print(msg1)
             q2.put(msg1)
             ##################################### 
