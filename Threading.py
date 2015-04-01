@@ -251,9 +251,9 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 		can_dlc = len(message)
 		message = bytes.fromhex(message)# Think these are the send commands?
 		message = message.ljust(8, b'\x00')
-		msg1 = (str(message)).encode("utf-8")
-		print(msg1)
-		canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, msg1)
+		#msg1 = (str(message)).encode("utf-8")
+		print(message)
+		canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, message)
 		cansock.send(canmessage)
 		q2.task_done() #Marks the message as sent so it can move on to the next
 		
