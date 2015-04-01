@@ -249,9 +249,12 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 	while 1:
 		message = q2.get() #Gets CAN message from the queue 
 		can_dlc = len(message)
+		print("can dlc is")
+		print(can_dlc)
 		message = bytes.fromhex(message)# Think these are the send commands?
 		message = message.ljust(8, b'\x00')
 		#msg1 = (str(message)).encode("utf-8")
+		print("message is")
 		print(message)
 		canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, message)
 		cansock.send(canmessage)
