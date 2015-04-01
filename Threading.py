@@ -251,7 +251,7 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 		print("can dlc is")
 		print(can_dlc)
 		message = bytes.fromhex(message)# Think these are the send commands?
-		message = message.ljust(8, b'\x00')
+		#message = message.ljust(8, b'\x00')
 		#msg1 = (str(message)).encode("utf-8")
 		print("message is")
 		print(message)
