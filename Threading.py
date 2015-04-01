@@ -79,12 +79,14 @@ def threadFunc(conn, addr,filename):
             # checks if want to send a can message 
             #send message to other programme here
              #some method to send a can message
-            file = open(filename,"a") #file path will need changing
-            file.write(message1.replace("_SEND_CAN_MESSAGE_","")+"\r\r")
-            file.close()
-            message1 = message1.replace("_SEND_CAN_MESSAGE_","")
-            print("sending Can Message: " + message1)
-            msg1 = (str(message1)).encode("utf-8")
+            #file = open(filename,"a") #file path will need changing
+            #file.write(message1.replace("_SEND_CAN_MESSAGE_","")+"\r\r")
+            #file.close()
+            #message1 = message1.replace("_SEND_CAN_MESSAGE_","")
+            #print("sending Can Message: " + message1)
+            #msg1 = (str(message1)).encode("utf-8")
+            print(msg1)
+            q2.put(msg1)
             ##################################### 
         elif "_SET_MESSAGE_FREQUENCY_" in message1:
             # checks if want to change the rate a messages are sent at 
@@ -186,7 +188,6 @@ def get_info(db):
     return info
 
 def main():
-
     global db_clients_INFO
     global db_clients_IP
     host = ''
@@ -227,12 +228,11 @@ def CanInt(): # Initialises all the CAN stuff
 		q2.task_done()
 		#starting CAN send thread
 	
-	#CANTalk = threading.Thread(target = lambda: SendCanMessage(can_frame_fmt, can_id, can_dlc))
+	CANTalk = threading.Thread(target = lambda: SendCanMessage(can_frame_fmt, 0x400))
 	#example of how you communicate with the send thread
-	#CANTalk.daemon = True
-	#CANTalk.start()
-	message = 'test'
-	q2.put(message)
+	CANTalk.daemon = True
+	CANTalk.start()
+
 	
 def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which gets the CAN message
 	while 1: #infinite loop which just gets CAN messages. Put the SQL connection here.
@@ -244,11 +244,12 @@ def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which g
 		print('Received: can_id=%x, can_dlc=%x, data=%s' % struct.unpack(can_frame_fmt, cf)) 
 	return (can_id, can_dlc, data[:can_dlc])
 	
-def SendCanMessage(can_frame_fmt, can_id, can_dlc):
+def SendCanMessage(can_frame_fmt, can_id):
 	while 1:
 		message = q2.get() #Gets CAN message from the queue 
 		can_dlc = len(message) # Think these are the send commands?
 		message = message.ljust(8, b'\x00')
+		can_dlc = 8
 		canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, message)
 		cansock.send(canmessage)
 		q2.task_done() #Marks the message as sent so it can move on to the next
