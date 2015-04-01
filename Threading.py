@@ -250,6 +250,7 @@ def SendCanMessage(can_frame_fmt, can_id):
 		message = q2.get() #Gets CAN message from the queue 
 		can_dlc = len(message)/2 # Think these are the send commands?
 		msg1 = (str(message)).encode("utf-8")
+		print(msg1)
 		canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, msg1)
 		cansock.send(canmessage)
 		q2.task_done() #Marks the message as sent so it can move on to the next
