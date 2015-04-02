@@ -247,9 +247,9 @@ def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which g
 def SendCanMessage(can_frame_fmt, can_id,cansock):
 	while 1:
 		message = q2.get() #Gets CAN message from the queue 
-		message.split(",")
+		message = message.split(",")
 		can_dlc = message[0]
-		data = message[2]
+		data = message[1]
 		print(data)
 		#can_dlc = len(message)/2
 		#can_dlc = int(can_dlc)
