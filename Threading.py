@@ -261,7 +261,7 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 		#canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, message)
 		#message = b"\x00\x00"
 		print(message)
-		canmessage = struct.pack(can_frame_fmt, can_id, 2, data)
+		canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, data)
 		cansock.send(canmessage)
 		q2.task_done() #Marks the message as sent so it can move on to the next
 		print("message sent")
