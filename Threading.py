@@ -250,6 +250,7 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 		message.split(",")
 		can_dlc = message[0]
 		data = message[1]
+		print(data)
 		#can_dlc = len(message)/2
 		#can_dlc = int(can_dlc)
 		data = bytes.fromhex(data)# Think these are the send commands?
