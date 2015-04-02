@@ -84,9 +84,9 @@ def threadFunc(conn, addr):
             #file.close()
             message1 = message1.replace("_SEND_CAN_MESSAGE_","")
             print("sending Can Message: " + message1)
-            
             print(message1)
             q2.put(message1)
+            msg1 = (str(message1)).encode("utf-8")
             ##################################### 
         elif "_SET_MESSAGE_FREQUENCY_" in message1:
             # checks if want to change the rate a messages are sent at 
@@ -248,8 +248,6 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 	while 1:
 		message = q2.get() #Gets CAN message from the queue 
 		#message.split(",")
-		
-			
 		#can_dlc = len(message)/2
 		#can_dlc = int(can_dlc)
 		message = bytes.fromhex(message)# Think these are the send commands?
@@ -258,12 +256,11 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 		#print("message is")
 		#print(message)
 		#canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, message)
-		
 		#message = b"\x00\x00"
 		print(message)
 		canmessage = struct.pack(can_frame_fmt, can_id, 2, message)
 		cansock.send(canmessage)
-		#q2.task_done() #Marks the message as sent so it can move on to the next
+		q2.task_done() #Marks the message as sent so it can move on to the next
 		print("message sent")
 		
 db_clients_INFO = []
