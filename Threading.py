@@ -247,10 +247,12 @@ def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which g
 def SendCanMessage(can_frame_fmt, can_id,cansock):
 	while 1:
 		message = q2.get() #Gets CAN message from the queue 
-		#message.split(",")
+		message.split(",")
+		can_dlc = message[0]
+		data = message[1]
 		#can_dlc = len(message)/2
 		#can_dlc = int(can_dlc)
-		message = bytes.fromhex(message)# Think these are the send commands?
+		data = bytes.fromhex(data)# Think these are the send commands?
 		#message = message.ljust(8, b'\x00')
 		#msg1 = (str(message)).encode("utf-8")
 		#print("message is")
@@ -258,7 +260,7 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 		#canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, message)
 		#message = b"\x00\x00"
 		print(message)
-		canmessage = struct.pack(can_frame_fmt, can_id, 2, message)
+		canmessage = struct.pack(can_frame_fmt, can_id, 2, data)
 		cansock.send(canmessage)
 		q2.task_done() #Marks the message as sent so it can move on to the next
 		print("message sent")
