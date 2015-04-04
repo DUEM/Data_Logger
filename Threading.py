@@ -16,33 +16,33 @@ def threadFunc(conn, addr):
     while 1:
         #connect = SQL_interface.connect(SQL_interface.username,SQL_interface.password,SQL_interface.database)
         #cursor = SQL_interface.cursor(connect)
-        try: #getting message
-            message1 = conn.recv(2048)
-            if not len(message1):
-                print("Disconnected with " + addr[0] + ":" + str(addr[1]))
-                conn.close()
-                break
-            if type(message1) == bytes:
-                message1 = message1.decode("utf-8")
-                print("Received: " + str(message1))
-            else:
-                print("Received: " + str(message1))
+    	try: #getting message
+        	message1 = conn.recv(2048)
+        	if not len(message1):
+                	print("Disconnected with " + addr[0] + ":" + str(addr[1]))
+                	conn.close()
+                	break
+            	if type(message1) == bytes:
+                	message1 = message1.decode("utf-8")
+                	print("Received: " + str(message1))
+            	else:
+                	print("Received: " + str(message1))
         except:
-            print("Failed to recieve the message")
-            conn.close()
-            break
+        	print("Failed to recieve the message")
+        	conn.close()
+            	break
         if message1 == "_db_":
-            if addr[0] == "127.0.0.1":
-                global db_clients_INFO
-                info = get_info(db_clients_INFO)
-                msg1 = (str(info)).encode("utf-8")
-            else:
-                info = "You don\'t have permission to access this database\n"
-                msg1 = (str(info)).encode("utf-8")
-        elif message1 == "_info_":
-            info = "1) _db_ for users info database\n"
-            info += "2) _mv_ for movies database\n"
-            msg1 = (str(info)).encode("utf-8")
+            	if addr[0] == "127.0.0.1":
+                	global db_clients_INFO
+                	info = get_info(db_clients_INFO)
+                	msg1 = (str(info)).encode("utf-8")
+            	else:
+                	info = "You don\'t have permission to access this database\n"
+                	msg1 = (str(info)).encode("utf-8")
+	elif message1 == "_info_":
+            	info = "1) _db_ for users info database\n"
+            	info += "2) _mv_ for movies database\n"
+        	msg1 = (str(info)).encode("utf-8")
 #############################################################################################################################
 #******************************************** Sensor Data Request **********************************************************#
 #############################################################################################################################
@@ -51,19 +51,19 @@ def threadFunc(conn, addr):
             #Query SQL
             
             ##########
-            info = "Speed_data: "
-            info += str(speed_data)
-            msg1 = (str(info)).encode("utf-8")
+            	info = "Speed_data: "
+            	info += str(speed_data)
+            	msg1 = (str(info)).encode("utf-8")
         elif message1 == "Temp_data_all":
             #get temp data from all sources here (query sql database or get it live of the CAN)
             #query SQL
             
             
             ##########
-            info = "Temp data" + str(source_id) + ": " #get the id of the node which sent the data
-            info += str(temp_data)
-            msg1 = (str(info)).encode("utf-8")
-        elif message1 == "Bat_SOC":
+            	info = "Temp data" + str(source_id) + ": " #get the id of the node which sent the data
+            	info += str(temp_data)
+            	msg1 = (str(info)).encode("utf-8")
+	elif message1 == "Bat_SOC":
             #get SOC data (query sql database or get it live of the CAN) 
             #going to query SQL
             
@@ -81,7 +81,7 @@ def threadFunc(conn, addr):
         	message1 = message1.replace("_SEND_CAN_MESSAGE_","")
         	print("sending Can Message: " + message1)
         	print(message1)
-        	if "," in message1:
+		if "," in message1:
 			message = message1.split(",")
 			if (message[0]!="")and(message[1]!="")and(message[1].isalpha() != 1)and(message[0].isalpha() != 1)and(len(message[1])/2) == int(message[0]):				q2.put(message)
 				print("message sent")
@@ -91,7 +91,7 @@ def threadFunc(conn, addr):
 				msg1 =("Message Error"+message1).encode("utf-8")
 		else:
 			print("message error")
-            		msg1 =("Message Error"+message1).encode("utf-8")
+	  		msg1 =("Message Error"+message1).encode("utf-8")
             ##################################### 
         elif "_SET_MESSAGE_FREQUENCY_" in message1:
             # checks if want to change the rate a messages are sent at 
