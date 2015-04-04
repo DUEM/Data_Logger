@@ -243,16 +243,13 @@ def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which g
 	
 def SendCanMessage(can_frame_fmt, can_id,cansock):
 	while 1:
-		#Gets CAN message from the queue 
 		message = q2.get().split(",")
 		if (len(message[1])/2) == int(message[0]):
-			canmessage = struct.pack(can_frame_fmt, can_id, int(message[0]), bytes.fromhex(message[1]))
-			cansock.send(canmessage)
-			q2.task_done() #Marks the message as sent so it can move on to the next
+			cansock.send(struct.pack(can_frame_fmt, can_id, int(message[0]), bytes.fromhex(message[1])))
 			print("message sent")
 		else:
 			print("message error")#ideally this sends a messgae to the gui but cba coding atm
-		
+		q2.task_done() 
 db_clients_INFO = []
 db_clients_IP = []
 main()
