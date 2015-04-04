@@ -249,8 +249,8 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 		print(can_dlc)
 		data = message[1]
 		data_length = len(data)
-		data = bytes.fromhex(data)# Think these are the send commands?
 		if (data_length/2) == can_dlc:
+			data = bytes.fromhex(data)
 			canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, data)
 			cansock.send(canmessage)
 			q2.task_done() #Marks the message as sent so it can move on to the next
