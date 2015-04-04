@@ -79,21 +79,20 @@ def threadFunc(conn, addr):
             # checks if want to send a can message 
             #send message to other programme here
 
-            message1 = message1.replace("_SEND_CAN_MESSAGE_","")
-            print("sending Can Message: " + message1)
-            print(message1)
-            if "," in message1:
+        	message1 = message1.replace("_SEND_CAN_MESSAGE_","")
+        	print("sending Can Message: " + message1)
+        	print(message1)
+        	if "," in message1:
 			message=message1.split(",")
 			if (message[0]!="")and(message[1]!="")and(message[1].isalpha() != 1)and(message[0].isalpha() != 1)and(len(message[1])/2) == int(message[0]):				q2.put(message)
 				print("message sent")
-				msg1 =("Message sent").encode("utf-8")
+				msg1 =("Message sent"+message1).encode("utf-8")
 			else:
 				print("message error")
-				msg1 =("Message Error").encode("utf-8")
-	else:
-		print("message error")
-		msg1 =("Message Error").encode("utf-8")
-            msg1 = (str(message1)).encode("utf-8")
+				msg1 =("Message Error"+message1).encode("utf-8")
+		else:
+			print("message error")
+            		msg1 =("Message Error"+message1).encode("utf-8")
             ##################################### 
         elif "_SET_MESSAGE_FREQUENCY_" in message1:
             # checks if want to change the rate a messages are sent at 
