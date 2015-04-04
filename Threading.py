@@ -90,9 +90,9 @@ def threadFunc(conn, addr):
 			else:
 				print("message error")
 				msg1 =("Message Error").encode("utf-8")
-		else:
-			print("message error")
-			msg1 =("Message Error").encode("utf-8")
+	else:
+		print("message error")
+		msg1 =("Message Error").encode("utf-8")
             msg1 = (str(message1)).encode("utf-8")
             ##################################### 
         elif "_SET_MESSAGE_FREQUENCY_" in message1:
