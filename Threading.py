@@ -22,7 +22,7 @@ def threadFunc(conn, addr):
                 	print("Disconnected with " + addr[0] + ":" + str(addr[1]))
                 	conn.close()
                 	break
-            	if type(message1) == bytes:
+                if type(message1) == bytes:
                 	message1 = message1.decode("utf-8")
                 	print("Received: " + str(message1))
             	else:
@@ -31,7 +31,7 @@ def threadFunc(conn, addr):
         	print("Failed to recieve the message")
         	conn.close()
             	break
-        if message1 == "_db_":
+	if message1 == "_db_":
             	if addr[0] == "127.0.0.1":
                 	global db_clients_INFO
                 	info = get_info(db_clients_INFO)
