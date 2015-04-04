@@ -243,10 +243,14 @@ def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which g
 	
 def SendCanMessage(can_frame_fmt, can_id,cansock):
 	while 1:
-		message = q2.get().split(",")
-		if (message[0]!="")and(message[1]!="")and(message[1].isalpha() != 1)and(message[0].isalpha() != 1)and(len(message[1])/2) == int(message[0]):
-			cansock.send(struct.pack(can_frame_fmt, can_id, int(message[0]), bytes.fromhex(message[1])))
-			print("message sent")
+		message = q2.get()
+		if "," in message:
+			message=message.split(",")
+			if (message[0]!="")and(message[1]!="")and(message[1].isalpha() != 1)and(message[0].isalpha() != 1)and(len(message[1])/2) == int(message[0]):
+				cansock.send(struct.pack(can_frame_fmt, can_id, int(message[0]), bytes.fromhex(message[1])))
+				print("message sent")
+			else:
+				print("message error")
 		else:
 			print("message error")#ideally this sends a messgae to the gui but cba coding atm
 		q2.task_done() 
