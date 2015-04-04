@@ -248,7 +248,7 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 		can_dlc = int(message[0])
 		print(can_dlc)
 		data = message[1]
-		print(len(message[1])
+		print(len(message[1]))
 		data = bytes.fromhex(data)# Think these are the send commands?
 		canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, data)
 		cansock.send(canmessage)
