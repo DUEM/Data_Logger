@@ -69,21 +69,20 @@ def threadFunc(conn, addr):
             
             
             ###################
-            info = "SOC: " 
-            info += str(SOC)
-            msg1 = (str(info)).encode("utf-8")
+        	info = "SOC: " 
+        	info += str(SOC)
+        	msg1 = (str(info)).encode("utf-8")
 ############################################################################################################################
 #******************************************************** Recieving Commands **********************************************#
 ############################################################################################################################
         elif "_SEND_CAN_MESSAGE_" in message1:
             # checks if want to send a can message 
             #send message to other programme here
-
         	message1 = message1.replace("_SEND_CAN_MESSAGE_","")
         	print("sending Can Message: " + message1)
         	print(message1)
         	if "," in message1:
-			message=message1.split(",")
+			message = message1.split(",")
 			if (message[0]!="")and(message[1]!="")and(message[1].isalpha() != 1)and(message[0].isalpha() != 1)and(len(message[1])/2) == int(message[0]):				q2.put(message)
 				print("message sent")
 				msg1 =("Message sent"+message1).encode("utf-8")
@@ -96,13 +95,13 @@ def threadFunc(conn, addr):
             ##################################### 
         elif "_SET_MESSAGE_FREQUENCY_" in message1:
             # checks if want to change the rate a messages are sent at 
-            msg_freq = message1[-1] # set the frequency of messages
+        	msg_freq = message1[-1] # set the frequency of messages
         elif "_SET_SAVE_FREQUENCY_" in message1:
             # checks if want to change how often to save on the loggers local storage
-            save_freq = message1[-1] #set message save frequency
+        	save_freq = message1[-1] #set message save frequency
         elif "_STOP_RECORDING_CAN_" in message1:
             #send command to other programme here
-            print("stop")
+        	print("stop")
             ####################################
         elif "_MONITOR_CAN_BUS_" == message1:
             # get live can bus activity and send to client
