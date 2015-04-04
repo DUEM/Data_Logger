@@ -246,12 +246,11 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 		message = q2.get() #Gets CAN message from the queue 
 		message = message.split(",")
 		can_dlc = int(message[0])
-		print(can_dlc)
 		data = message[1]
 		data_length = len(data)
-		if (data_length/2) == can_dlc:
+		if (data_length/2) == int(message[0]):
 			data = bytes.fromhex(data)
-			canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, data)
+			canmessage = struct.pack(can_frame_fmt, can_id, int(message[0]), data)
 			cansock.send(canmessage)
 			q2.task_done() #Marks the message as sent so it can move on to the next
 			print("message sent")
