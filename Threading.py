@@ -78,14 +78,22 @@ def threadFunc(conn, addr):
         elif "_SEND_CAN_MESSAGE_" in message1:
             # checks if want to send a can message 
             #send message to other programme here
-             #some method to send a can message
-            #file = open(filename,"a") #file path will need changing
-            #file.write(message1.replace("_SEND_CAN_MESSAGE_","")+"\r\r")
-            #file.close()
+
             message1 = message1.replace("_SEND_CAN_MESSAGE_","")
             print("sending Can Message: " + message1)
             print(message1)
-            q2.put(message1)
+            if "," in message1:
+			message=message1.split(",")
+			if (message[0]!="")and(message[1]!="")and(message[1].isalpha() != 1)and(message[0].isalpha() != 1)and(len(message[1])/2) == int(message[0]):
+				q2.put(message)
+				print("message sent")
+				msg1 =("Message sent").encode("utf-8")
+			else:
+				print("message error")
+				msg1 =("Message Error").encode("utf-8")
+		else:
+			print("message error")
+			msg1 =("Message Error").encode("utf-8")
             msg1 = (str(message1)).encode("utf-8")
             ##################################### 
         elif "_SET_MESSAGE_FREQUENCY_" in message1:
@@ -244,15 +252,7 @@ def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which g
 def SendCanMessage(can_frame_fmt, can_id,cansock):
 	while 1:
 		message = q2.get()
-		if "," in message:
-			message=message.split(",")
-			if (message[0]!="")and(message[1]!="")and(message[1].isalpha() != 1)and(message[0].isalpha() != 1)and(len(message[1])/2) == int(message[0]):
-				cansock.send(struct.pack(can_frame_fmt, can_id, int(message[0]), bytes.fromhex(message[1])))
-				print("message sent")
-			else:
-				print("message error")
-		else:
-			print("message error")#ideally this sends a messgae to the gui but cba coding atm
+		cansock.send(struct.pack(can_frame_fmt, can_id, int(message[0]), bytes.fromhex(message[1])))
 		q2.task_done() 
 db_clients_INFO = []
 db_clients_IP = []
