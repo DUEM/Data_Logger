@@ -89,126 +89,126 @@ def threadFunc(conn, addr):
 			print("message error")
 	  		msg1 =("Message Error"+message1).encode("utf-8")
             ##################################### 
-        elif "_SET_MESSAGE_FREQUENCY_" in message1:
+	elif "_SET_MESSAGE_FREQUENCY_" in message1:
             # checks if want to change the rate a messages are sent at 
-        	msg_freq = message1[-1] # set the frequency of messages
-        elif "_SET_SAVE_FREQUENCY_" in message1:
+		msg_freq = message1[-1] # set the frequency of messages
+	elif "_SET_SAVE_FREQUENCY_" in message1:
             # checks if want to change how often to save on the loggers local storage
-        	save_freq = message1[-1] #set message save frequency
-        elif "_STOP_RECORDING_CAN_" in message1:
+ 		save_freq = message1[-1] #set message save frequency
+	elif "_STOP_RECORDING_CAN_" in message1:
             #send command to other programme here
-        	print("stop")
+		print("stop")
             ####################################
-        elif "_MONITOR_CAN_BUS_" == message1:
+	elif "_MONITOR_CAN_BUS_" == message1:
             # get live can bus activity and send to client
             # probs create a thread to wait for activity and send to the client
             #message1 = "Displaying Live CAN Activity"
             #last_message_time="2015-02-04 16:20:26.558000"
-            last_message_time = "401"
+		last_message_time = "401"
             #a_long_time="2020-02-04 16:20:26.558000"
-            a_long_time="499"
-            latest_message = SQL_interface.query(cursor,connect,"Node ID",last_message_time,a_long_time)
-            for (Time, Node_ID, Data) in latest_message:
-                message1 = "_MONITOR_CAN_BUS_"+"{1}, {0} {2}".format(Time, Node_ID, Data)
-                print(message1)
-                msg1 = (str(message1)).encode("utf-8")
-        elif "_STOP_MONITOR_CAN_BUS_" == message1:
+		a_long_time="499"
+		latest_message = SQL_interface.query(cursor,connect,"Node ID",last_message_time,a_long_time)
+		for (Time, Node_ID, Data) in latest_message:
+			message1 = "_MONITOR_CAN_BUS_"+"{1}, {0} {2}".format(Time, Node_ID, Data)
+			print(message1)
+			msg1 = (str(message1)).encode("utf-8")
+	elif "_STOP_MONITOR_CAN_BUS_" == message1:
             #stops sending live CAN data
-            message1 = "No Longer Displaying Live CAN Activity"
-            msg1 = (str(message1)).encode("utf-8")
-        elif "_COM_LIVE_PLOT_BAT_" in message1:
-            message1 = "_COM_LIVE_PLOT_BAT_" + str(random.randrange(1,10+1))
-            msg1 = (str(message1)).encode("utf-8")
-        elif "_COM_SAVE_BAT_" in message1:
-            message1 = "_COM_SAVE_BAT_" + str(random.randrange(1,10+1))
-            msg1 = (str(message1)).encode("utf-8")
-        elif "_COM_LIVE_PLOT_SPEED_" in message1:
-            message1 = "_COM_LIVE_PLOT_SPEED_" + str(random.randrange(1,10+1))
-            msg1 = (str(message1)).encode("utf-8")
-        elif "_COM_SAVE_SPEED_" in message1:
-            message1 = "_COM_SAVE_SPEED_" + str(random.randrange(1,10+1))
-            msg1 = (str(message1)).encode("utf-8")
-        elif "_COM_LIVE_PLOT_TEMP_" in message1:
-            message1 = "_COM_LIVE_PLOT_TEMP_" + str(random.randrange(1,10+1))
-            msg1 = (str(message1)).encode("utf-8")
-        elif "_COM_SAVE_TEMP_" in message1:
-            message1 = "_COM_SAVE_TEMP_" + str(random.randrange(1,10+1))
-            msg1 = (str(message1)).encode("utf-8")
+		message1 = "No Longer Displaying Live CAN Activity"
+		msg1 = (str(message1)).encode("utf-8")
+	elif "_COM_LIVE_PLOT_BAT_" in message1:
+		message1 = "_COM_LIVE_PLOT_BAT_" + str(random.randrange(1,10+1))
+		msg1 = (str(message1)).encode("utf-8")
+	elif "_COM_SAVE_BAT_" in message1:
+		message1 = "_COM_SAVE_BAT_" + str(random.randrange(1,10+1))
+		msg1 = (str(message1)).encode("utf-8")
+	elif "_COM_LIVE_PLOT_SPEED_" in message1:
+		message1 = "_COM_LIVE_PLOT_SPEED_" + str(random.randrange(1,10+1))
+		msg1 = (str(message1)).encode("utf-8")
+	elif "_COM_SAVE_SPEED_" in message1:
+		message1 = "_COM_SAVE_SPEED_" + str(random.randrange(1,10+1))
+		msg1 = (str(message1)).encode("utf-8")
+	elif "_COM_LIVE_PLOT_TEMP_" in message1:
+		message1 = "_COM_LIVE_PLOT_TEMP_" + str(random.randrange(1,10+1))
+		msg1 = (str(message1)).encode("utf-8")
+	elif "_COM_SAVE_TEMP_" in message1:
+		message1 = "_COM_SAVE_TEMP_" + str(random.randrange(1,10+1))
+		msg1 = (str(message1)).encode("utf-8")
 #############################################################################################################################
 #******************************************************** Errors ***********************************************************#
 #############################################################################################################################
-        else:
-            message1 = "Unknown command \nType: _info_ for a list of commands"
-            msg1 = (str(message1)).encode("utf-8")
+	else:
+		message1 = "Unknown command \nType: _info_ for a list of commands"
+		msg1 = (str(message1)).encode("utf-8")
 #############################################################################################################################
 #**************************************************** Sending Message ******************************************************#
 #############################################################################################################################
-        try:
-            conn.sendall(msg1)
-        except:
-            print("Failed to send the message")
+	try:
+		conn.sendall(msg1)
+	except:
+		print("Failed to send the message")
 
 
 def con_info(addr):
-    host,port = addr
-    try:
-        results = socket.getaddrinfo(host,port,0,socket.SOCK_STREAM)
-    except:
-        results = []
-        print("[Error] cannot get info about the client")
-    return results
+	host,port = addr
+	try:
+		results = socket.getaddrinfo(host,port,0,socket.SOCK_STREAM)
+	except:
+		results = []
+		print("[Error] cannot get info about the client")
+	return results
 
 def get_info(db):
-    info = ""
-    for results in db:
-        for result in results:
-            info += ("_"*40)
-            info += "\n"
-            if result[0] == socket.AF_INET:
-                info += ("Family: AF_INET")
-            elif result[0] == socket.AF_INET6:
-                info += ("Family: AF_INET6")
-            else:
-                info += ("Family:",result[0])
-            info += "\n"
-            if result[1] == socket.SOCK_STREAM:
-                info += ("Socket Type: SOCK_STREAM")
-            elif result[1] == socket.SOCK_DGRAM:
-                info += ("Socket Type: SOCK_DGRAM")
-            else:
-                info += ("Unknown type:",result[1])
-            info += "\n"
-            info += ("Protocol: "+str(result[2]))
-            info += "\n"
-            info += ("Canonical Name: "+str(result[3]))
-            info += "\n"
-            info += ("Socket Address: "+", ".join([str(x) for x in result[4]]))
-            info += "\n"
-            info += ("_"*40)
-            info += "\n"
-    return info
+	info = ""
+	for results in db:
+		for result in results:
+			info += ("_"*40)
+			info += "\n"
+		if result[0] == socket.AF_INET:
+			info += ("Family: AF_INET")
+		elif result[0] == socket.AF_INET6:
+			info += ("Family: AF_INET6")
+		else:
+			info += ("Family:",result[0])
+			info += "\n"
+		if result[1] == socket.SOCK_STREAM:
+			info += ("Socket Type: SOCK_STREAM")
+		elif result[1] == socket.SOCK_DGRAM:
+			info += ("Socket Type: SOCK_DGRAM")
+		else:
+			info += ("Unknown type:",result[1])
+			info += "\n"
+			info += ("Protocol: "+str(result[2]))
+			info += "\n"
+			info += ("Canonical Name: "+str(result[3]))
+			info += "\n"
+			info += ("Socket Address: "+", ".join([str(x) for x in result[4]]))
+			info += "\n"
+			info += ("_"*40)
+			info += "\n"
+	return info
 
 def main():
-    global db_clients_INFO
-    global db_clients_IP
-    host = ''
-    port = 51432
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    s.bind((host,port))
-    s.listen(5)
-    print("Starting server")
-    CanInt() # Start CAN Stuff
-    while 1:
-        conn, addr = s.accept()
-        c = con_info(addr)
-        if c[0][4][0] not in db_clients_IP:
-            db_clients_IP.append(c[0][4][0])
-            db_clients_INFO.append(c)
-        t = threading.Thread(target = threadFunc, args = (conn, addr))
-        print("Connected with: " + addr[0] + ":" + str(addr[1]))
-        t.start()
-    s.close()
+	global db_clients_INFO
+	global db_clients_IP
+	host = ''
+	port = 51432
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+	s.bind((host,port))
+	s.listen(5)
+	print("Starting server")
+	CanInt() # Start CAN Stuff
+	while 1:
+		conn, addr = s.accept()
+		c = con_info(addr)
+		if c[0][4][0] not in db_clients_IP:
+			db_clients_IP.append(c[0][4][0])
+			db_clients_INFO.append(c)
+		t = threading.Thread(target = threadFunc, args = (conn, addr))
+		print("Connected with: " + addr[0] + ":" + str(addr[1]))
+		t.start()
+	s.close()
 
 #################################################################
 ###################### CAN STUFF ################################
@@ -218,7 +218,6 @@ def CanInt(): # Initialises all the CAN stuff
 	can_frame_size = struct.calcsize(can_frame_fmt)
 	cansock = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
 	cansock.bind(('can0',))
-	
 	CANListen = threading.Thread(target = lambda: recieveCanMessage(can_frame_size, can_frame_fmt, cansock))
 	CANListen.daemon = True
 	CANListen.start()
