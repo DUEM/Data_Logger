@@ -13,16 +13,16 @@ q2 = Queue() #Talk to Send CAN thread
 q2.join()
 
 def threadFunc(conn, addr):
-    while 1:
+	while 1:
         #connect = SQL_interface.connect(SQL_interface.username,SQL_interface.password,SQL_interface.database)
         #cursor = SQL_interface.cursor(connect)
-    	try: #getting message
-        	message1 = conn.recv(2048)
-        	if not len(message1):
-                	print("Disconnected with " + addr[0] + ":" + str(addr[1]))
-                	conn.close()
-                	break
-        	if type(message1) == bytes:
+	try: #getting message
+		message1 = conn.recv(2048)
+		if not len(message1):
+			print("Disconnected with " + addr[0] + ":" + str(addr[1]))
+			conn.close()
+			break
+		if type(message1) == bytes:
 			message1 = message1.decode("utf-8")
 			print("Received: " + str(message1))
 		else:
