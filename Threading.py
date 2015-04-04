@@ -84,8 +84,7 @@ def threadFunc(conn, addr):
             print(message1)
             if "," in message1:
 			message=message1.split(",")
-			if (message[0]!="")and(message[1]!="")and(message[1].isalpha() != 1)and(message[0].isalpha() != 1)and(len(message[1])/2) == int(message[0]):
-				q2.put(message)
+			if (message[0]!="")and(message[1]!="")and(message[1].isalpha() != 1)and(message[0].isalpha() != 1)and(len(message[1])/2) == int(message[0]):				q2.put(message)
 				print("message sent")
 				msg1 =("Message sent").encode("utf-8")
 			else:
