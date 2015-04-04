@@ -22,8 +22,8 @@ def threadFunc(conn, addr):
                 	print("Disconnected with " + addr[0] + ":" + str(addr[1]))
                 	conn.close()
                 	break
-                if type(message1) == bytes:
-                	message1 = message1.decode("utf-8")
+        	if type(message1) == bytes:
+        		message1 = message1.decode("utf-8")
                 	print("Received: " + str(message1))
             	else:
                 	print("Received: " + str(message1))
