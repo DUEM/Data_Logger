@@ -23,9 +23,9 @@ def threadFunc(conn, addr):
                 	conn.close()
                 	break
         	if type(message1) == bytes:
-        		message1 = message1.decode("utf-8")
+			message1 = message1.decode("utf-8")
 			print("Received: " + str(message1))
-            	else:
+		else:
 			print("Received: " + str(message1))
 	except:
 		print("Failed to recieve the message")
