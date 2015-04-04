@@ -217,8 +217,6 @@ def CanInt(): # Initialises all the CAN stuff
 	can_frame_size = struct.calcsize(can_frame_fmt)
 	cansock = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
 	cansock.bind(('can0',))
-	# clears the que before it is used
-
 	
 	CANListen = threading.Thread(target = lambda: recieveCanMessage(can_frame_size, can_frame_fmt, cansock))
 	CANListen.daemon = True
@@ -227,7 +225,6 @@ def CanInt(): # Initialises all the CAN stuff
 		q2.get()
 		q2.task_done()
 		#starting CAN send thread
-	
 	CANTalk = threading.Thread(target = lambda: SendCanMessage(can_frame_fmt, 0x400,cansock))
 	#example of how you communicate with the send thread
 	CANTalk.daemon = True
@@ -249,18 +246,10 @@ def SendCanMessage(can_frame_fmt, can_id,cansock):
 		message = q2.get() #Gets CAN message from the queue 
 		message = message.split(",")
 		can_dlc = int(message[0])
+		print(can_dlc)
 		data = message[1]
-		print(data)
-		#can_dlc = len(message)/2
-		#can_dlc = int(can_dlc)
+		print(len(message[1])
 		data = bytes.fromhex(data)# Think these are the send commands?
-		#message = message.ljust(8, b'\x00')
-		#msg1 = (str(message)).encode("utf-8")
-		#print("message is")
-		#print(message)
-		#canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, message)
-		#message = b"\x00\x00"
-		print(message)
 		canmessage = struct.pack(can_frame_fmt, can_id, can_dlc, data)
 		cansock.send(canmessage)
 		q2.task_done() #Marks the message as sent so it can move on to the next
