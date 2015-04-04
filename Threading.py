@@ -24,63 +24,59 @@ def threadFunc(conn, addr):
                 	break
         	if type(message1) == bytes:
         		message1 = message1.decode("utf-8")
-                	print("Received: " + str(message1))
+			print("Received: " + str(message1))
             	else:
-                	print("Received: " + str(message1))
-        except:
-        	print("Failed to recieve the message")
-        	conn.close()
-            	break
+			print("Received: " + str(message1))
+	except:
+		print("Failed to recieve the message")
+		conn.close()
+		break
 	if message1 == "_db_":
-            	if addr[0] == "127.0.0.1":
-                	global db_clients_INFO
-                	info = get_info(db_clients_INFO)
-                	msg1 = (str(info)).encode("utf-8")
-            	else:
-                	info = "You don\'t have permission to access this database\n"
-                	msg1 = (str(info)).encode("utf-8")
+		if addr[0] == "127.0.0.1":
+			global db_clients_INFO
+			info = get_info(db_clients_INFO)
+			msg1 = (str(info)).encode("utf-8")
+		else:
+			info = "You don\'t have permission to access this database\n"
+			msg1 = (str(info)).encode("utf-8")
 	elif message1 == "_info_":
-            	info = "1) _db_ for users info database\n"
-            	info += "2) _mv_ for movies database\n"
-        	msg1 = (str(info)).encode("utf-8")
+		info = "1) _db_ for users info database\n"
+		info += "2) _mv_ for movies database\n"
+		msg1 = (str(info)).encode("utf-8")
 #############################################################################################################################
 #******************************************** Sensor Data Request **********************************************************#
 #############################################################################################################################
-        elif message1 == "Speed_data":
+	elif message1 == "Speed_data":
             #get speed data here (query sql database or get it live of the CAN)
             #Query SQL
             
             ##########
-            	info = "Speed_data: "
-            	info += str(speed_data)
-            	msg1 = (str(info)).encode("utf-8")
-        elif message1 == "Temp_data_all":
+		info = "Speed_data: "
+		info += str(speed_data)
+		msg1 = (str(info)).encode("utf-8")
+	elif message1 == "Temp_data_all":
             #get temp data from all sources here (query sql database or get it live of the CAN)
             #query SQL
-            
-            
             ##########
-            	info = "Temp data" + str(source_id) + ": " #get the id of the node which sent the data
-            	info += str(temp_data)
-            	msg1 = (str(info)).encode("utf-8")
+		info = "Temp data" + str(source_id) + ": " #get the id of the node which sent the data
+		info += str(temp_data)
+		msg1 = (str(info)).encode("utf-8")
 	elif message1 == "Bat_SOC":
             #get SOC data (query sql database or get it live of the CAN) 
             #going to query SQL
-            
-            
             ###################
-        	info = "SOC: " 
-        	info += str(SOC)
-        	msg1 = (str(info)).encode("utf-8")
+		info = "SOC: " 
+		info += str(SOC)
+		msg1 = (str(info)).encode("utf-8")
 ############################################################################################################################
 #******************************************************** Recieving Commands **********************************************#
 ############################################################################################################################
-        elif "_SEND_CAN_MESSAGE_" in message1:
+	elif "_SEND_CAN_MESSAGE_" in message1:
             # checks if want to send a can message 
             #send message to other programme here
-        	message1 = message1.replace("_SEND_CAN_MESSAGE_","")
-        	print("sending Can Message: " + message1)
-        	print(message1)
+		message1 = message1.replace("_SEND_CAN_MESSAGE_","")
+		print("sending Can Message: " + message1)
+		print(message1)
 		if "," in message1:
 			message = message1.split(",")
 			if (message[0]!="")and(message[1]!="")and(message[1].isalpha() != 1)and(message[0].isalpha() != 1)and(len(message[1])/2) == int(message[0]):				q2.put(message)
