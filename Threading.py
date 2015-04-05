@@ -88,14 +88,14 @@ def threadFunc(conn, addr):
 					msg1 =("Message Error"+message1).encode("utf-8")
 			else:
 				print("message error")
-		  		msg1 =("Message Error"+message1).encode("utf-8")
+				msg1 =("Message Error"+message1).encode("utf-8")
 	            ##################################### 
 		elif "_SET_MESSAGE_FREQUENCY_" in message1:
 	            # checks if want to change the rate a messages are sent at 
 			msg_freq = message1[-1] # set the frequency of messages
 		elif "_SET_SAVE_FREQUENCY_" in message1:
 	            # checks if want to change how often to save on the loggers local storage
-	 		save_freq = message1[-1] #set message save frequency
+			save_freq = message1[-1] #set message save frequency
 		elif "_STOP_RECORDING_CAN_" in message1:
 	            #send command to other programme here
 			print("stop")
