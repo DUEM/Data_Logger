@@ -5,10 +5,6 @@ import datetime
 #import SQL_interface
 from queue import Queue
 ## SERVER
-
-q1 = Queue() # talk to recieve CAN thread
-q1.join()
-
 q2 = Queue() #Talk to Send CAN thread
 q2.join()
 
