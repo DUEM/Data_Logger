@@ -236,6 +236,7 @@ def recieveCanMessage(can_frame_size, can_frame_fmt, cansock): #Function which g
 		print('Received: can_id=%x '% can_id)
 		print('Received: can_dlc=%x' % can_dlc)
 		print('Received: data=%s' % data)
+		print(data)
 		print('Received: can_id=%x, can_dlc=%x, data=%s' % struct.unpack(can_frame_fmt, cf)) 
 	return (can_id, can_dlc, data[:can_dlc])
 	
