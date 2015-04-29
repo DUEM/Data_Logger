@@ -213,6 +213,7 @@ def main():
 def CanInt(): # Initialises all the CAN stuff
 	can_frame_fmt = "=IB3x8s"
 	can_frame_size = struct.calcsize(can_frame_fmt)
+	print(can_frame_size)
 	cansock = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
 	cansock.bind(('can0',))
 	CANListen = threading.Thread(target = lambda: recieveCanMessage(can_frame_size, can_frame_fmt, cansock))
