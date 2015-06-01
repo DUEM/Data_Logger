@@ -22,14 +22,6 @@ s = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
 s.bind(('can0',))
 
 while True:
-    cf, addr = s.recvfrom(can_frame_size)
-
-    print('Received: can_id=%x, can_dlc=%x, data=%s' % dissect_can_frame(cf))
-
-    try:
-        s.send(cf)
-    except OSError:
-        print('Error sending CAN frame')
 
     try:
         s.send(build_can_frame(0x01, b'\x01\x02\x03'))
