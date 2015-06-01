@@ -20,7 +20,8 @@ def dissect_can_frame(frame):
 # create a raw socket and bind it to the 'vcan0' interface
 s = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
 s.bind(('can0',))
-try:
-    s.send(build_can_frame(0x01, b'\x01\x02\x03'))
-except OSError:
-    print('Error sending CAN frame')
+while true:
+    try:
+        s.send(build_can_frame(0x01, b'\x01\x02\x03'))
+    except OSError:
+        print('Error sending CAN frame')
