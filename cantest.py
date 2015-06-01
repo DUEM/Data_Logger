@@ -19,7 +19,7 @@ def dissect_can_frame(frame):
 
 # create a raw socket and bind it to the 'vcan0' interface
 s = socket.socket(socket.AF_CAN, socket.SOCK_RAW, socket.CAN_RAW)
-s.bind(('vcan0',))
+s.bind(('can0',))
 
 while True:
     cf, addr = s.recvfrom(can_frame_size)
