@@ -160,7 +160,7 @@ username="ed"
 #database = str(input("Enter Database: "))
 database="test"
 #password = str(input("Enter Password: "))
-password="runrun93"
+password="password"
 connect = connect(username,password,database)
 cursor = cursor(connect)
 
