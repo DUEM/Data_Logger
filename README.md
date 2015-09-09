@@ -40,6 +40,7 @@ Ensure the required kernel modules are installed using:
 Now we need to install can-utils, I did the following:
 
 > mkdir tmp && cd tmp/
+
 > git clone https://github.com/linux-can/can-utils.git
 
 > cd can-utils/
