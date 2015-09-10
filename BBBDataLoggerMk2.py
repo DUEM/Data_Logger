@@ -21,7 +21,7 @@ def add_message(node_id,data,cursor,connect):
     return 1
 #########################################################################################################################
 
-username="ed"
+username="root"
 database="test"
 password="dusc2015"
 connect = connect(username,password,database)
