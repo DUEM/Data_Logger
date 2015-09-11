@@ -25,7 +25,7 @@ password="dusc2015"
 connect = connect(username,password,database)
 cursor = cursor(connect)
 
-add_message("poop")
+add_message("poop", cursor, connect)
 
 can_interface = 'can0'
 can_interface_type = 'socketcan_ctypes'
