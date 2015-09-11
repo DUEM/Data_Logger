@@ -8,11 +8,9 @@ def connect(username,password,database):
 def cursor(connect):
     cursor = connect.cursor()
     return cursor
-def add_message(node_id,data,cursor,connect):
+def add_message(data,cursor,connect):
     ###################################### Creating the Argument #######################
-    add_message = "INSERT INTO can ( `Node ID`, `Data` ) VALUES ('"
-    add_message += node_id
-    add_message += "','"
+    add_message = "INSERT INTO can ( `msg_data` ) VALUES ('"
     add_message += data
     add_message += "')"
     print(add_message)
@@ -27,6 +25,8 @@ password="dusc2015"
 connect = connect(username,password,database)
 cursor = cursor(connect)
 
+add_message("poop")
+
 can_interface = 'can0'
 can_interface_type = 'socketcan_ctypes'
 
@@ -35,6 +35,8 @@ bus = can.interface.Bus(can_interface, can_interface_type)
 
 while 1:
   message = bus.recv()
+  
+  
   
   # msg = can.Message(arbitration_id=0xc0ffee, data=[2, 0, 0, 1, 3, 1, 4, 1], extended_id=False)
   # bus.send(msg)
