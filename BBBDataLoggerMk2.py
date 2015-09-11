@@ -25,7 +25,6 @@ password="dusc2015"
 connect = connect(username,password,database)
 cursor = cursor(connect)
 
-add_message("poop", cursor, connect)
 
 can_interface = 'can0'
 can_interface_type = 'socketcan_ctypes'
@@ -34,9 +33,7 @@ bus = can.interface.Bus(can_interface, can_interface_type)
 
 
 while 1:
-  message = bus.recv()
-  
-  
+  add_message(str(bus.recv()), cursor, connect)
   
   # msg = can.Message(arbitration_id=0xc0ffee, data=[2, 0, 0, 1, 3, 1, 4, 1], extended_id=False)
   # bus.send(msg)
