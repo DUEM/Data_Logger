@@ -15,7 +15,7 @@ def add_message(msg_id, data,cursor,connect):
     add_message = "INSERT INTO can ( 'msg_id', 'msg_data' ) VALUES ('"
     #add_message += str(time1)
     #add_message += ", "
-    add_message += int(msg_id)
+    add_message += str(msg_id)
     add_message += "', "
     add_message += str(msg_data)
     add_message += ")"
