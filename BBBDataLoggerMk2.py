@@ -16,13 +16,13 @@ def add_message(msg_id, msg_data, cursor, connect):
     add_message += str(time1)
     add_message += "', '"
     add_message += str(msg_id)
-    add_message += "', '"
-    data_string = ""
+    add_message += "', "
+    data_string = "0x"
     if msg_data is not None:
         for byte in msg_data:
-            data_string += "%.2x" % byte)
+            data_string += "%.2x" % byte
     add_message += data_string
-    add_message += "' )"
+    add_message += " )"
     print(add_message)
     cursor.execute(add_message)
     connect.commit()
@@ -41,7 +41,7 @@ can_interface_type = 'socketcan_ctypes'
 
 bus = can.interface.Bus(can_interface, can_interface_type)
 
-msg = can.Message(arbitration_id=0x520, data=[2, 0, 0, 1, 3, 1, 4, 1], extended_id=False)
+msg = can.Message(arbitration_id=0x520, data=[2, 0, 0, 1], extended_id=False)
 add_message(msg.arbitration_id, msg.data, cursor, connect)
 
 """
