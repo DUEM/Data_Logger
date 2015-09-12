@@ -38,7 +38,7 @@ can_interface_type = 'socketcan_ctypes'
 bus = can.interface.Bus(can_interface, can_interface_type)
 
 msg = can.Message(arbitration_id=0x520, data=[2, 0, 0, 1, 3, 1, 4, 1], extended_id=False)
-add_message(msg.arbiration_id, msg.data, cursor, connect)
+add_message(msg.arbitration_id, msg.data, cursor, connect)
 
 """
 while 1:
