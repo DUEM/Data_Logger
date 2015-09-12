@@ -14,9 +14,9 @@ def add_message(msg_id, data,cursor,connect):
     ###################################### Creating the Argument #######################
     add_message = "INSERT INTO can ( 'msg_time', 'msg_id') VALUES ("
     add_message += str(time1)
-    add_message += ", '"
+    add_message += ", "
     add_message += str(msg_id)
-    add_message += "')"
+    add_message += ")"
     print(add_message)
     cursor.execute(add_message)
     connect.commit()
