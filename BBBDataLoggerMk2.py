@@ -9,16 +9,19 @@ def connect(username,password,database):
 def cursor(connect):
     cursor = connect.cursor()
     return cursor
-def add_message(msg_id, msg_data, cursor, connect):
+def add_message(msg_id, msg_len, msg_data, cursor, connect):
     time1 = datetime.datetime.now()
     ###################################### Creating the Argument #######################
-    add_message = "INSERT INTO can ( msg_time, msg_id, msg_data ) VALUES ('"
+    add_message = "INSERT INTO can ( msg_time, msg_id, msg_len, msg_data ) VALUES ('"
     add_message += str(time1)
     add_message += "', '"
     add_message += str(msg_id)
     add_message += "', "
-    data_string = "0x"
-    if msg_data is not None:
+    add_message += str(msg_len)
+    add_message += "', "
+    data_string = ""
+    if msg_data:
+        data_string = "0x"
         for byte in msg_data:
             data_string += "%.2x" % byte
     add_message += data_string
@@ -46,7 +49,7 @@ bus = can.interface.Bus(can_interface, can_interface_type)
 
 
 while 1:
-  add_message(bus.recv().arbitration_id, bus.recv().data, cursor, connect)
+  add_message(bus.recv().arbitration_id, bus.recv().dlc, bus.recv().data, cursor, connect)
   
   # bus.send(msg)
 
