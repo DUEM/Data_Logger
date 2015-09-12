@@ -49,7 +49,8 @@ bus = can.interface.Bus(can_interface, can_interface_type)
 
 
 while 1:
-  add_message(bus.recv().arbitration_id, bus.recv().dlc, bus.recv().data, cursor, connect)
+    msg = bus.recv()
+    add_message(msg.arbitration_id, msg.dlc, msg.data, cursor, connect)
   
   # bus.send(msg)
 
