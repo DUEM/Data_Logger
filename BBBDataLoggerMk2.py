@@ -21,7 +21,7 @@ def add_message(msg_id, msg_data, cursor, connect):
     """if msg_data is not None:
         for byte in msg_data:
             data_strings.append("%.2x" % byte)"""
-    add_message += " ".join(msg_data)
+    add_message += " ".join(hex(msg_data))
     add_message += "')"
     print(add_message)
     cursor.execute(add_message)
