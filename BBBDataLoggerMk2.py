@@ -17,7 +17,11 @@ def add_message(msg_id, msg_data, cursor, connect):
     add_message += "', '"
     add_message += str(msg_id)
     add_message += "', '"
-    add_message += str(msg_data)
+    data_strings = []
+    if self.data is not None:
+        for byte in self.data:
+            data_strings.append("%.2x" % byte)
+    add_message += data_strings
     add_message += "')"
     print(add_message)
     cursor.execute(add_message)
