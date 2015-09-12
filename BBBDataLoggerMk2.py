@@ -17,7 +17,7 @@ def add_message(msg_id, data,cursor,connect):
     add_message += "', '"
     add_message += str(msg_id)
     add_message += "', '"
-    add_message += str(data)
+    add_message += str(0)
     add_message += "')"
     print(add_message)
     cursor.execute(add_message)
