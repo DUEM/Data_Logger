@@ -9,7 +9,7 @@ def connect(username,password,database):
 def cursor(connect):
     cursor = connect.cursor()
     return cursor
-def add_message(msg_id, data,cursor,connect):
+def add_message(msg_id, msg_data, cursor, connect):
     #time1 = datetime.datetime.now()
     ###################################### Creating the Argument #######################
     add_message = "INSERT INTO can ( 'msg_id', 'msg_data' ) VALUES ('"
