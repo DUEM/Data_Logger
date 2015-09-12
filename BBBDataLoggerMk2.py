@@ -16,7 +16,7 @@ def add_message(msg_id, msg_len, msg_data, cursor, connect):
     add_message += str(time1)
     add_message += "', '"
     add_message += str(msg_id)
-    add_message += "', "
+    add_message += "', '"
     add_message += str(msg_len)
     add_message += "', "
     data_string = ""
