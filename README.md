@@ -62,3 +62,40 @@ Now all you need to do to set up CAN is:
 > sudo ifconfig can0 up
 
 Plug your beaglebone into a tranceiver with pins P9_24->RXD and P_26->TXD (these are next to the serial header). Now you can use cansend and candump to send and recieve messages. See: https://discuss.cantact.io/t/using-can-utils/24
+
+===========
+Setting up nginx + php on Beaglebone Black
+===========
+
+Install nginx:
+
+> apt-get update
+> apt-get install nginx
+
+Config files are in /etc/nginx. Server files are in /usr/share/nginx/www.
+
+Disable default processes that use port 80:
+
+> systemctl disable cloud9.service
+> systemctl disable gateone.service
+> systemctl disable bonescript.service
+> systemctl disable bonescript.socket
+> systemctl disable bonescript-autorun.service
+> systemctl disable avahi-daemon.service
+> systemctl disable gdm.service
+> systemctl disable mpd.service
+
+Test the installation by going to the ip of your BB in your web-browser.
+
+Install php fastcgi:
+
+> apt-get install php5-fpm php5-mysql
+
+Open /etc/nginx/sites-available/default with your text editor of choice (I use nano) and uncomment the section regarding php fastcgi. Also add index.php to the list of the other index names.
+
+Restart nginx:
+
+> nginx -s reload
+
+
+
