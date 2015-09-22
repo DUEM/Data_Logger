@@ -77,12 +77,19 @@ Config files are in /etc/nginx. Server files are in /usr/share/nginx/www.
 Disable default processes that use port 80:
 
 > systemctl disable cloud9.service
+
 > systemctl disable gateone.service
+
 > systemctl disable bonescript.service
+
 > systemctl disable bonescript.socket
+
 > systemctl disable bonescript-autorun.service
+
 > systemctl disable avahi-daemon.service
+
 > systemctl disable gdm.service
+
 > systemctl disable mpd.service
 
 Test the installation by going to the ip of your BB in your web-browser.
@@ -96,6 +103,11 @@ Open /etc/nginx/sites-available/default with your text editor of choice (I use n
 Restart nginx:
 
 > nginx -s reload
+
+Resources:
+http://www.element14.com/community/community/designcenter/single-board-computers/next-gen_beaglebone/blog/2013/11/20/beaglebone-web-server--setup
+https://www.digitalocean.com/community/tutorials/how-to-install-linux-nginx-mysql-php-lemp-stack-on-ubuntu-14-04
+https://www.nginx.com/resources/wiki/start/topics/examples/phpfcgi/
 
 
 
