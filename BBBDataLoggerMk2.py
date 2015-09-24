@@ -21,9 +21,10 @@ def add_message(msg_id, msg_len, msg_data, cursor, connect):
     add_message += "', "
     data_string = ""
     if msg_data:
-        data_string = "0x"
+        data_string = ""
         for byte in msg_data:
-            data_string += "%.2x" % byte
+            data_string = "".join( ( "%.2x" % byte, data_string) )
+        data_string = "0x" + data_string
     add_message += data_string
     add_message += " )"
     print(add_message)
