@@ -109,5 +109,27 @@ http://www.element14.com/community/community/designcenter/single-board-computers
 https://www.digitalocean.com/community/tutorials/how-to-install-linux-nginx-mysql-php-lemp-stack-on-ubuntu-14-04
 https://www.nginx.com/resources/wiki/start/topics/examples/phpfcgi/
 
+===========
+Mount SD-Card to extend storage
+===========
 
+Shut down the beaglebone and plug in the SD-card. List the available drives:
+
+> fdisk -l
+
+You should see a list of drives and their partitions. If you turned on the beaglebone with the sd card inserted it will be located at /dev/mmcblk0, otherwise it will be at /dev/mmcblk1. Now use fdisk to modify the drive partitions (e careful to get the right drive here!):
+
+> fdisk /dev/mmcblk0
+
+This will open up a console program. Use d to delete the existing partitions and n to create a new one. Once you are done, use p to verify that you have the right partition and wite it to the card using w.
+
+Finally, add the following line to /etc/fstab:
+
+> /dev/mmcblk0p1    /media/card     auto     auto,rw,async,user,nofail  0  0
+
+Contents of the sdcard will be available under /media/card/ .
+
+You can now move your mysql database data to the sdcard by changing the value of datadir in /etc/mysql/my.cnf from /var/lib/mysql to /media/card/mysql and moving files (with permissions using rsync -a /var/lib/mysql/ /media/card/mysql/ .
+
+http://electronicsembedded.blogspot.co.uk/2014/10/beaglebone-black-using-sd-card-as-extra.html
 
