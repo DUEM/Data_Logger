@@ -133,3 +133,33 @@ You can now move your mysql database data to the sdcard by changing the value of
 
 http://electronicsembedded.blogspot.co.uk/2014/10/beaglebone-black-using-sd-card-as-extra.html
 
+===========
+Set up script to run automatically
+===========
+
+Create a shell script such as /root/start_logging.sh (make sure to set it to be executable and ensure permissions are set with chmod -x and chmod 777)
+
+Create a service file in /lib/systemd/system/data_logger.service such as:
+
+'[Unit]
+Description=My Fancy Service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/myFancyBash.sh
+
+[Install]
+WantedBy=multi-user.target'
+
+Create a symbolic link between your script and a special location under /etc:
+
+> ln -s /lib/systemd/system/data_logger.service /etc/systemd/system/data_logger.service
+
+Make systemd aware of your new service
+
+> systemctl daemon-reload
+
+> systemctl enable myFancy.service
+
+> systemctl start myFancy.service
+
