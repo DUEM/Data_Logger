@@ -159,7 +159,11 @@ Make systemd aware of your new service
 
 > systemctl daemon-reload
 
-> systemctl enable myFancy.service
+> systemctl enable data_logger.service
 
-> systemctl start myFancy.service
+> systemctl start data_logger.service
+
+Use can then use systemctl stop/start/status/disable to manipulte the service.
+
+https://gist.github.com/tstellanova/7323116
 
