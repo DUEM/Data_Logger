@@ -143,6 +143,8 @@ Create a service file in /lib/systemd/system/data_logger.service such as:
 
 '[Unit]
 Description=My Fancy Service
+Requires=mysql.service
+After=mysql.service
 
 [Service]
 Type=simple
