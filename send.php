@@ -36,7 +36,7 @@ if(isset($_POST['submitted'])) {
   
   echo("<br><br>Brap brap! <br><br>");
   
-  echo( shell_exec("echo test " . $msg) );
+  echo( shell_exec("cansend can0 " . $msg) );
   
   
 }
