@@ -7,7 +7,7 @@
 <body>
 
 
-<form >
+<form action="send.php" method="post">
 ID:  <input type="text" name="msg_id" value="400" size ="4" />
 
 Data:  <input type="text" name="msg_data" size="20" />
