@@ -23,5 +23,7 @@ if(isset($_POST['submitted'])) {
   echo( "thanks blud." );
 }
 
+?>
+
 </body>
 </html>
