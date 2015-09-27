@@ -1,8 +1,9 @@
 <html>
 <head>
-<!--
- <meta http-equiv="refresh" content="5"> 
--->
+<?php
+	 //echo('<meta http-equiv="refresh" content="3">';
+?> 
+<!-- -->
 <title>Welcome to nginx!</title>
 </head>
 
@@ -26,21 +27,31 @@ $dbc = @mysql_connect( 'localhost', 'root', 'dusc2015' )
 @mysql_select_db( 'test' ) OR die ( 'Could not select database: ' .  mysql_error( ) );
 
 
-$result = mysql_query ( 'SELECT * FROM can WHERE msg_id = 1281 LIMIT 1;' );
+$result = mysql_query ( 'SELECT * FROM can WHERE msg_id = 1281 ORDER BY msg_no DESC LIMIT 1;' );
 
 while ( $row = mysql_fetch_array( $result, MYSQL_ASSOC ) ) {
         echo('Speed: ');
-        echo(hexTo32Float(bin2hex( substr($row['msg_data'], 4, 4) )) . '<br>' );
+	//$data = pack('f2', 30.87, 60.56);
+        $data = $row['msg_data'];
+	//echo( hexTo32Float(bin2hex( substr( $data, 4, 4) )) . '<br>' );
+	$floats = unpack('f2', $data);
+	echo( $floats['1'] . ', Current: ' . $floats['2'] );
+
+	/* $afloat = 46;
+	$afloatdata = pack("f", $afloat);
+	echo( bin2hex( $afloatdata ) . ", " );
+	$afloatarray = unpack("H4a/H4b", $afloatdata);
+	echo( $afloatarray['b'] ); */
 }
 
 echo('<br><br><br>');
 
 //Print out last recieved messages
 // SELECT * FROM can WHERE msg_id BETWEEN 0 AND 1000 ORDER BY msg_id ASC LIMIT 5;
-$result = mysql_query ( 'SELECT * FROM can LIMIT 10;' );
+$result = mysql_query ( 'SELECT * FROM can ORDER BY msg_no DESC LIMIT 10;' );
 while ( $row = mysql_fetch_array( $result, MYSQL_ASSOC ) ) {
 	echo($row['msg_no'] . ', ' . $row['msg_id'] . ', ');
-	echo('0x' .  bin2hex($row['msg_data']) . '<br>' );
+	echo('0x' . strrev( unpack('h*hex', $row['msg_data'])['hex'] ) . '<br>' );
 }
 
 ?>
