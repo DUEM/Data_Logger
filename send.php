@@ -20,10 +20,18 @@ Data:  <input type="text" name="msg_data" size="20" />
 
 <i>NB: Cansend accepts numbers ina hexadecimal format with the first byte to the left. </i>
 
+<br><br>
+
 <?php
 
 if(isset($_POST['submitted'])) {
-  echo( "thanks blud." );
+  
+  $msg_id = $_POST['msg_id'];
+  $msg_data = $_POST['msg_data'];
+  $msg = '' . $msg_id . "#" . $msg_data
+  echo( "thanks blud, u just sent a message wot be " . $msg );
+  
+  
 }
 
 ?>
