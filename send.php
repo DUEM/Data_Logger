@@ -8,9 +8,9 @@
 
 
 <form >
-First name:  <input type="text" name="first_name" />
-<br>
-Last name:  <input type="text" name="last_name" />
+ID:  <input type="text" name="msg_id" value="400" />
+
+Data:  <input type="text" name="msg_data" />
 </form>
 
 
