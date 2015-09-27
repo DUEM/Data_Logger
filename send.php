@@ -15,6 +15,7 @@ ID:  <input type="text" name="msg_id" value="400" size ="4" />
 Data:  <input type="text" name="msg_data" size="20" />
 
 <input type="submit" name="submit" value="Submit" />
+<input type="reset" name="reset" value="Reset" />
 </form>
 
 <i>NB: Cansend accepts numbers ina hexadecimal format with the first byte to the left. </i>
