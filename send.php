@@ -16,6 +16,7 @@ Data:  <input type="text" name="msg_data" size="20" />
 
 <input type="submit" name="submit" value="Submit" />
 <input type="reset" name="reset" value="Reset" />
+<input type="submit" name="reload" value="Reload" />
 </form>
 
 <i>NB: Cansend accepts numbers ina hexadecimal format with the first byte to the left. </i>
@@ -24,7 +25,7 @@ Data:  <input type="text" name="msg_data" size="20" />
 
 <?php
 
-if(isset($_POST['submitted'])) {
+if(isset($_POST['submit'])) {
   
   $msg_id = str_pad( trim($_POST['msg_id']), 3, "0");
   $msg_data = trim($_POST['msg_data']);
