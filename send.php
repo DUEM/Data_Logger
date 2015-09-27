@@ -27,10 +27,10 @@ Data:  <input type="text" name="msg_data" size="20" />
 if(isset($_POST['submitted'])) {
   
   $msg_id = trim($_POST['msg_id']);
-  $msg_data = trim9$_POST['msg_data']);
+  $msg_data = trim(9)$_POST['msg_data']);
   
   if (!ctype_xdigit($msg_id)) echo( "nah fam, " . $msg_id . " aint a hex string, you get me?" );
-  if (!ctype_xdigit($msg_data)) echo( "nah fam, " . $msg_id . " aint a hex string, you get me?" );
+  if (($msg_data != '') && !ctype_xdigit($msg_data)) echo( "nah fam, " . $msg_data . " aint a hex string, you get me?" );
   $msg = '' . $msg_id . "#" . $msg_data;
   echo( "thanks blud, u just sent a message wot be " . $msg );
   
