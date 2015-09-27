@@ -29,15 +29,16 @@ if(isset($_POST['submitted'])) {
   $msg_id = str_pad( trim($_POST['msg_id']), 3, "0");
   $msg_data = trim($_POST['msg_data']);
   
-  if (!ctype_xdigit($msg_id)) echo( "nah fam, " . $msg_id . " aint a hex string, you get me?" );
-  if (($msg_data != '') && !ctype_xdigit($msg_data)) echo( "nah fam, " . $msg_data . " aint a hex string, you get me?" );
-  $msg = '' . $msg_id . "#" . $msg_data;
-  echo( "thanks blud, u just sent a message wot be " . $msg . ", boomshanka");
-  
-  echo("<br><br>Brap brap! <br><br>");
-  
-  echo( shell_exec("cansend can0 " . $msg) );
-  
+  if (!ctype_xdigit($msg_id)) {
+    echo( "nah fam, " . $msg_id . " aint a hex string, you get me?" );
+  } else if (($msg_data != '') && !ctype_xdigit($msg_data)) {
+    echo( "nah fam, " . $msg_data . " aint a hex string, you get me?" );
+  } else {
+    $msg = '' . $msg_id . "#" . $msg_data;
+    //N>B: This is potentially a massive security flaw.
+    echo( "thanks blud, u just sent a message wot be " . $msg . ", boomshanka. Errors here: ");
+    echo( shell_exec("cansend can0 $msg 2>&1") );
+  }
   
 }
 
