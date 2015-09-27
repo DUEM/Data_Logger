@@ -8,6 +8,8 @@
 
 
 <form action="send.php" method="post">
+<input type="hidden" name="submitted" value="TRUE" />
+  
 ID:  <input type="text" name="msg_id" value="400" size ="4" />
 
 Data:  <input type="text" name="msg_data" size="20" />
