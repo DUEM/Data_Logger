@@ -15,7 +15,7 @@ ID:  <input type="text" name="msg_id" value="400" size ="4" />
 Data:  <input type="text" name="msg_data" size="20" />
 
 <input type="submit" name="submit" value="Submit" />
-<input type="reset" name="reset" value="Reset" />
+<!--<input type="reset" name="reset" value="Reset" /> -->
 <input type="submit" name="reload" value="Reload" />
 </form>
 
@@ -27,7 +27,7 @@ Data:  <input type="text" name="msg_data" size="20" />
 
 if(isset($_POST['submit'])) {
   
-  $msg_id = str_pad( trim($_POST['msg_id']), 3, "0");
+  $msg_id = str_pad( trim($_POST['msg_id']), 3, "0", STR_PAD_LEFT);
   $msg_data = trim($_POST['msg_data']);
   
   if (!ctype_xdigit($msg_id)) {
