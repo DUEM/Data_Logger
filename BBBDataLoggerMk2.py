@@ -27,7 +27,7 @@ def add_message(msg_id, msg_len, msg_data, cursor, connect):
         data_string = "0x" + data_string
     add_message += data_string
     add_message += " )"
-    print(add_message)
+    #print(add_message)
     cursor.execute(add_message)
     connect.commit()
     return 1
