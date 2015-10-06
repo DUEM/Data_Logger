@@ -31,7 +31,7 @@ And enable it using:
 
 > echo BB-DCAN1 > /sys/devices/bone_capemgr.*/slots
 
-(NB. I think the second of these lines shouldn't have to be repeated, but I've had to run it every time I reboot the BBB)
+(NB. I think the second of these lines shouldn't have to be repeated, but I've had to run it every time I reboot the BBB. THis can be fixed by adding BB-DCAN1 to /etc/default/capemgr)
 
 Ensure the required kernel modules are installed using:
 
